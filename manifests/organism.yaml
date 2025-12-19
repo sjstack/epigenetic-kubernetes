@@ -8,19 +8,19 @@ spec:
   selector:
     matchLabels:
       app: cell
-    template:
-      metadata:
-        label:
-	  app: cell
-	annotations:
-	  # Initial epigenetic state: Unmethylated
-	  epigenetic-mark.science/methylation-level: "0"
-      spec:
-        containers:
-	- name: cell-process
-	  image: python:3.9-slim
-	  command: ["python", "-c", "import time; print('Cell functioning...'); time.sleep(3600)"]
-	  resources:
-	    requests:
-	      cpu: "100m"
-	      memory: "64Mi"
+  template:
+    metadata:
+      labels:
+        app: cell
+      annotations:
+        # Initial epigenetic state: Unmethylated
+        epigenetic-mark.science/methylation-level: "0"
+    spec:
+      containers:
+      - name: cell-process
+        image: python:3.9-slim
+        command: ["python", "-c", "import time; print('Cell functioning...'); time.sleep(3600)"]
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "64Mi"
