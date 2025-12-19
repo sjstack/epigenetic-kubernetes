@@ -1,0 +1,13 @@
+apiVersion:chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: environmental-stress
+  namespace: chaos-genome
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    labelSelectors:
+      app: "cell"
+    scheduler:
+      cron: "@every 1m" # Repeat the stress every minute
