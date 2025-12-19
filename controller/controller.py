@@ -8,10 +8,10 @@ except:
     config.load_kube_config()
 
 v1 = client.CoreV1Api()
-app_v1 = client.AppsV1Api()
+apps_v1 = client.AppsV1Api()
 
 NAMESPACE = "chaos-genome"
-STERSS_THRESHOLD = 1 # number of restarts to trigger epigenetic change
+STRESS_THRESHOLD = 1 # number of restarts to trigger epigenetic change
 
 def methylate_organism(pod_name, current_level):
    new_level = int(current_level) + 1
@@ -53,6 +53,9 @@ def monitor_cells():
                     "epigenetic-mark.science/methylation-level",
                     "0"
                 )
+                methylate_organism(pod.metadata.name, current_mark)
+                # Sleep to prevent race conditions during rollout
+                time.sleep(10)
 
 if __name__ == "__main__":
     monitor_cells()
