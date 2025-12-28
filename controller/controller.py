@@ -47,15 +47,14 @@ def monitor_cells():
         pod = event['object']
         status = pod.status
 
-        for container in status.container_statuses or []:
-            if container.restart_count >= STERSS_THRESHOLD:
-                current_mark = pod.metadata.annotations.get(
-                    "epigenetic-mark.science/methylation-level",
-                    "0"
-                )
-                methylate_organism(pod.metadata.name, current_mark)
-                # Sleep to prevent race conditions during rollout
-                time.sleep(10)
+        if event['type'] == "DELETED":
+            deployment = apps_v1.read_namespaced_deployment("clonal-organism", NAMESPACE)
+            current_mark = deployment.spec.template.metadata.annotations.get(
+                "epigenetic-mark.science/methylation-level",
+                "0"
+            )
+
+            methylate_organism("Colony", current_mark)
 
 if __name__ == "__main__":
     monitor_cells()
