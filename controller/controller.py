@@ -1,19 +1,21 @@
 import time
 from kubernetes import client, config, watch
 
-# Load K8s config (In-cluster if deployed, local if testing)
-try:
-    config.load_incluster_config()
-except:
-    config.load_kube_config()
-
-v1 = client.CoreV1Api()
-apps_v1 = client.AppsV1Api()
-
 NAMESPACE = "chaos-genome"
 STRESS_THRESHOLD = 1 # number of restarts to trigger epigenetic change
 
-def methylate_organism(pod_name, current_level):
+def get_k8s_client():
+    # Load K8s config (In-cluster if deployed, local if testing)
+    try:
+        config.load_incluster_config()
+    except:
+        config.load_kube_config()
+
+    v1 = client.CoreV1Api()
+    apps_v1 = client.AppsV1Api()
+    return v1, apps_v1
+
+def methylate_organism(apps_v1, pod_name, current_level):
    new_level = int(current_level) + 1
    print(f"🧬 Stress detected in {pod_name}. Methylating to level {new_level}...")
 
@@ -40,7 +42,7 @@ def methylate_organism(pod_name, current_level):
    }
    apps_v1.patch_namespaced_deployment("clonal-organism", NAMESPACE, body)
 
-def monitor_cells():
+def monitor_cells(v1, apps_v1):
     print("Watching for environmental stress (restarts)...")
     w = watch.Watch()
     for event in w.stream(v1.list_namespaced_pod, NAMESPACE):
@@ -54,7 +56,11 @@ def monitor_cells():
                 "0"
             )
 
-            methylate_organism("Colony", current_mark)
+            methylate_organism(apps_v1, "Colony", current_mark)
+
+def main():
+    v1, apps_v1 = get_k8s_client()
+    monitor_cells(v1, apps_v1)
 
 if __name__ == "__main__":
-    monitor_cells()
+    main()

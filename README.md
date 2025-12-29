@@ -63,6 +63,22 @@ kubectl get pods -n chaos-genome -l app=cell
 
 ---
 
+## Unit Testing
+
+To run the unit tests for the controller:
+
+1.  **Install Test Requirements:**
+    ```bash
+    pip install -r controller/test_requirements.txt -r controller/requirements.txt
+    ```
+
+2.  **Run Tests:**
+    ```bash
+    python -m pytest controller/tests/
+    ```
+
+---
+
 ## Inject Environmental Stress
 Start the recurring "pod-kill" events using the Chaos Mesh `Schedule` manifest:
 ```bash
