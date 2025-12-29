@@ -9,7 +9,7 @@ SSH_KEY_IDENTIFIER=${DO_SSH_KEY}
 
 if [ "$EPIK_ENV" == "prod" ]; then
     echo "🌐 Deploying to PRODUCTION (DOKS)..."
-    NODE_SIZE="s-2vcpu-4gb"
+    NODE_SIZE="s-2vpcu-4gb"
     NODE_COUNT=3
 
     doctl k8s cluster create $CLUSTER_NAME \
