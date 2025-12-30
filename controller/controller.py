@@ -55,19 +55,23 @@ def monitor_cells(v1, apps_v1):
     for event in w.stream(v1.list_namespaced_pod, NAMESPACE):
         pod = event['object']
         status = pod.status
+        pod_mark = pod.metadata.annotations.get("epigenetic-mark.science/methylation-level", "-1")
 
         if event['type'] == "DELETED":
-            if ORGANISM_TYPE.lower == "deployment":
+            if ORGANISM_TYPE.lower() == "deployment":
                 deployment = apps_v1.read_namespaced_deployment("clonal-organism", NAMESPACE)
-                if deployment.status.updated_replics == deployment.spec.replicas:
-                    current_mark = deployment.spec.template.metadata.annotations.get(
-                        "epigenetic-mark.science/methylation-level",
-                        "0"
-                    )
-                    methylate_organism(apps_v1, "Colony", current_mark)
-            elif ORGANISM_TYPE.lower == "statefulset":
-                deployment = apps_v1.read_namespaced_deployment("organism", NAMESPACE)
                 current_mark = deployment.spec.template.metadata.annotations.get(
+                    "epigenetic-mark.science/methylation-level",
+                    "0"
+                )
+                if pod_mark == current_mark:
+                    print(f"💀 Stress: Member of current generation ({pod_mark}) died.")
+                    methylate_organism(apps_v1, "Colony", current_mark)
+                else:
+                    print(f"♻️  Cleanup: Old generation member ({pod_mark}), skipping Methylation.")
+            elif ORGANISM_TYPE.lower() == "statefulset":
+                stateful_set = apps_v1.read_namespaced_stateful_set("organism", NAMESPACE)
+                current_mark = stateful_set.spec.template.metadata.annotations.get(
                     "epigenetic-mark.science/methylation-level",
                     "0"
                 )
