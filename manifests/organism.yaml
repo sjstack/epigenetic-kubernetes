@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: organism
+  namespace: chaose-genome
+spec:
+  replicas: 5
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      app: cell
+    template:
+      metadata:
+        labels:
+          app: cell
+        annotations:
+          epigenetic-mark.science/methylation-level: "0"
+      spec:
+        containers:
+        - name: cell-process
+          image: python:3.9-slim
+          command: ["python", "-c", "import time; print('Cell functioning...'); time.sleep(3600)"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
