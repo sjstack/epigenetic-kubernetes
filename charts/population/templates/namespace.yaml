@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: chaos-genome
+  name: {{ .Values.namespace }}
   labels:
     environment: experimental-biome
     simulation-type: epigenetic-adaptation
