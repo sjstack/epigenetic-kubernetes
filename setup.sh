@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-EPIK_ENV=${EPIK_ENV:~"dev"}
+EPIK_ENV=${EPIK_ENV:-"dev"}
 CLUSTER_NAME="chaos-genome-cluster"
 REGION="nyc1"
 SSH_KEY_IDENTIFIER=${DO_SSH_KEY}
@@ -54,10 +54,13 @@ else
 	sleep 5
     done
     
-    doctl compute ssh $DROPLET_NAME --ssh-command "curl -sfL https://get.k3s.io | sh -"
+    doctl compute ssh $DROPLET_NAME \
+	  --ssh-command "curl -sfL https://get.k3s.io | sh -"
 
     echo "🔑 Fetching k3s kubeconfig..."
-    doctl compute ssh $DROPLET_NAME --ssh-command "sudo cat /etc/rancher/k3s/k3s.yaml" > k3s_config.yaml
+    doctl compute ssh $DROPLET_NAME \
+	  --ssh-command "sudo cat /etc/rancher/k3s/k3s.yaml" > k3s_config.yaml
+
     sed -i "s/127.0.0.1/$DROPLET_IP/g" k3s_config.yaml
     export KUBECONFIG=$(pwd)/k3s_config.yaml
     echo "KUBECONFIG set to local k3s_config.yaml"
@@ -75,7 +78,7 @@ if ! command -v helm &> /dev/null; then
     exit 1
 fi
 
-helm upgrade --install organism-colony ./charts/organism-colony \
+helm upgrade --install population ./charts/population \
      --namespace chaos-genome \
      --create-namespace \
      --set strategy=$ORGANISM_STRATEGY \

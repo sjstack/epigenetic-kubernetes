@@ -44,7 +44,7 @@ spec:
     metadata:
       labels:
         app: cell
-	lineage: {{ $i | quote }}
+        lineage: {{ $i | quote }}
       annotations:
         epigenetic-mark.science/methylation-level: "0"
     spec:
