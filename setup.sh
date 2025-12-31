@@ -4,8 +4,10 @@
 EPIK_ENV=${EPIK_ENV:~"dev"}
 CLUSTER_NAME="chaos-genome-cluster"
 REGION="nyc1"
-
 SSH_KEY_IDENTIFIER=${DO_SSH_KEY}
+
+ORGANISM_STRATEGY=${ORGANISM_STRATEGY:-"transgenerational"}
+COUNT=${ORGANISM_COUNT:-5}
 
 if [ "$EPIK_ENV" == "prod" ]; then
     echo "🌐 Deploying to PRODUCTION (DOKS)..."
@@ -28,7 +30,7 @@ else
     fi
     
     DROPLET_NAME="chaos-genome-dev"
-    DROPLET_SIZE="s-1vpcu-2gb" # I need to figure out if this size droplet is big enough
+    DROPLET_SIZE="s-1vpcu-2gb" # I need to figure out if this size droplet is big or small enough
 
     echo "📦 Creating Droplet: $DROPLET_NAME with SSH Key: $SSH_KEY_IDENTIFIER..."
     doctl compute droplet create $DROPLET_NAME \
@@ -61,14 +63,23 @@ else
     echo "KUBECONFIG set to local k3s_config.yaml"
 fi
     
-echo "🏗️  Creating the Ecological Niche..."
-kubectl apply -f manifests/namespace.yaml
-
 echo "🌪️  Installing Chaos Mesh..."
 curl -sSL https://mirrors.chaos-mesh.org/v2.6.1/install.sh | bash
 
 echo "⏳ Waiting for Chaos Mesh components to initialize..."
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=chaos-mesh -n chaos-mesh --timeout=300s
+
+echo "🏗️  Deploying the Organism Colony via Helm (Strategy: $ORGANISM_STRATEGY)..."
+if ! command -v helm &> /dev/null; then
+    echo "❌ Error: Helm is not installed. Please install Helm to proceed."
+    exit 1
+fi
+
+helm upgrade --install organism-colony ./charts/organism-colony \
+     --namespace chaos-genome \
+     --create-namespace \
+     --set strategy=$ORGANISM_STRATEGY \
+     --set count=$ORGANISM_COUNT
 
 echo "✅ Setup Complete. Your environment is ready for the organism."
 
