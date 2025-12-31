@@ -1,0 +1,61 @@
+{{- if eq .Values.strategy "clonal" }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clonal-organism
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.Count }}
+  selector:
+    matchLabels:
+      app: cell
+  template:
+    metadata:
+      labels:
+        app: cell
+      annotations:
+        # Initial epigenetic state: Unmethylated
+        epigenetic-mark.science/methylation-level: "0"
+    spec:
+      containers:
+      - name: cell-process
+        image: {{ .Values.image }}
+        command: ["python", "-c", "import time; print('Cell functioning...'); time.sleep(3600)"]
+        resources:
+          requests:
+            cpu: {{ printf "%dm" (int .Values.baseCpu) }}
+            memory: {{ printf "%dMi" (int .Values.baseMemory) }}
+
+{{- else if eq .Values.strategy "transgenerational" }}
+{{- range $i := until (int .Values.Count) }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: organism-{{ $i }}
+  namespace: {{ $.Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cell
+      lineage: {{ $i | quote }}
+  template:
+    metadata:
+      labels:
+        app: cell
+        lineage: {{ $i | quote }}
+      annotations:
+        epigenetic-mark.science/methylation-level: "0"
+    spec:
+      containers:
+      - name: cell-process
+        image: {{ $.Values.image }}
+        command: ["python", "-c", "import time; print('Cell functioning...'); time.sleep(3600)"]
+        resources:
+          requests:
+            cpu: {{ printf "%dm" (int $.Values.baseCpu) }}
+            memory: {{ printf "%dMi" (int $.Values.baseMemory) }}
+---
+{{- end }}
+{{- end }}

@@ -1,0 +1,10 @@
+namespace: chaos-genome
+image: python:3.9-slim
+baseCpu: 100
+baseMemory: 64
+
+# either "clonal" or "transgenerational"
+strategy: "transgenerational"
+
+# is replicaCount for clonal, a different thing for transgenerational
+Count: 5

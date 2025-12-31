@@ -23,14 +23,14 @@ The `setup.sh` script handles both production (DOKS) and development (k3s on a s
 1. Find your SSH key fingerprint from DigitalOcean: `doctl compute ssh-key list`.
 2. Export the required variables and source the script:
    ```bash
-   export DEPLOY_ENV=development
+   export EPIK_ENV=dev
    export DO_SSH_KEY="your_ssh_key_fingerprint"
    source setup.sh
    ```
 
 ### For Production (DOKS)
 ```bash
-export DEPLOY_ENV=production
+export EPIK_ENV=prod
 source setup.sh
 ```
 
