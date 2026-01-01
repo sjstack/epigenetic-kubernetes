@@ -48,6 +48,38 @@ def methylate_organism(apps_v1, resource_type, name, current_level):
    else:
        apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)
 
+def demthylate_organism(apps_v1, resource_type, name, current_level):
+    new_level = max(0, int(current_level) - 1)
+    if new_level == int(current_level):
+        return
+
+    print(f"🌿 Stability detected in {resource_type}/{name}. Demethylating to level {new_level}...")
+
+    body = {
+        "spec": {
+            "template": {
+                "metadata": {
+                    "annotations": {
+                        "epigenetic-mark.science/methylation-level": str(new_level)
+                    }
+                },
+                "spec": {
+                    "containers": [{
+                        "name": "cell-process",
+                        "resources": {
+                            "requests": {"cpu": f"{100 * new_level if new_level > 0 else 10}m"}
+                        }
+                    }]
+                }
+            }
+        }
+    }
+
+    if resource_type == "Deployment":
+        apps_v1.patch_namespaced_deployment(name, NAMESPACE, body)
+    else:
+        apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)
+       
 def monitor_cells(v1, apps_v1):
     print("Watching for environmental stress (restarts)...")
     w = watch.Watch()
