@@ -127,8 +127,9 @@ class EpigeneticController:
         elif self.resource_type == "StatefulSet":
             # suddenly this looks same as above, so should probably consolidate this logic
             parent_name = "-".join(pod.metadata.name.split("-")[:-1])
-            current_mark = self.get_obj_methylation_level(name)
-
+            current_mark = self.get_obj_methylation_level(parent_name)
+            breakpoint()
+            print("HERE")
             if pod_mark == current_mark:
                 print(f"💀 Stress: Lineage member {parent_name} died.")
                 self.methylate(parent_name)
