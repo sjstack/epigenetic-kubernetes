@@ -37,14 +37,12 @@ class EpigeneticController:
         while True:
             try:
                 self.apps_v1.read_namespaced_deployment("clonal-organism", self.namespace)
-                #print something here
                 return "Deployment"
             except client.exceptions.ApiException:
                 pass
 
             try:
                 self.apps_v1.read_namespaced_stateful_set("organism-0", self.namespace)
-                #print something here
                 return "StatefulSet"
             except client.exceptions.ApiException:
                 pass
@@ -57,7 +55,7 @@ class EpigeneticController:
         obj_methylation_level = obj.spec.template.metadata.annotations.get(
             "epigenetic-mark.science/methylation-level",
             "0"
-        }
+        )
         return int(obj_methylation_level)
             
 
@@ -88,7 +86,7 @@ class EpigeneticController:
 
 
     def methylate(self, name):
-        current_level = get_obj_methylation_level(name)
+        current_level = self.get_obj_methylation_level(name)
         new_level = current_level+1
 
         print(f"🧬 Stress detected in {name}. Methylating to level {new_level}...")
@@ -96,8 +94,9 @@ class EpigeneticController:
 
 
     def demethylate(self, name):
-        current_level = get_obj_methylation_level(name)
-        return False if current_level < 1
+        current_level = self.get_obj_methylation_level(name)
+        if current_level < 1:
+            return False
         new_level = current_level-1
 
         print(f"🌿 Stability detected in {name}. Demethylating to level {new_level}...")
@@ -112,7 +111,7 @@ class EpigeneticController:
         pod_mark = int(pod.metadata.annotations.get(
             "epigenetic-mark.science/methylation-level",
             "0"
-        )}
+        ))
 
         if self.resource_type == "Deployment":
             name = "clonal-organism"
@@ -141,7 +140,7 @@ class EpigeneticController:
 
                     for s_set in stateful_sets.items:
                         if s_set.metadata.name.startswith("organism-"):
-                            demthylation_occurred = self.demethylate(s_set.metatdata.name)
+                            demthylation_occurred = self.demethylate(s_set.metadata.name)
 
                     if demethylation_occurred:
                         self.last_stress_time = current_time
@@ -153,12 +152,12 @@ class EpigeneticController:
         w = watch.Watch()
         print("👁️  Controller active. Watching for stress events...")
 
-        for even in w.stream(self.v1.list_namespaced_pod, self.namespace, timeout_seconds=10):
+        for event in w.stream(self.v1.list_namespaced_pod, self.namespace):
             if event:
-                if event['type'] = "DELETED":
+                if event['type'] == "DELETED":
                     self.handle_stress_event(event['object'])
-            else:
-                self.check_pods_stability()    
+                else:
+                    self.check_pods_stability()    
 
 
 if __name__=="__main__":
