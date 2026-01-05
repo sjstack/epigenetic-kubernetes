@@ -37,12 +37,14 @@ class EpigeneticController:
         while True:
             try:
                 self.apps_v1.read_namespaced_deployment("clonal-organism", self.namespace)
+                print("✅ Detected Strategy: CLONAL (Resource: Deployment)")
                 return "Deployment"
             except client.exceptions.ApiException:
                 pass
 
             try:
                 self.apps_v1.read_namespaced_stateful_set("organism-0", self.namespace)
+                print("✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)")
                 return "StatefulSet"
             except client.exceptions.ApiException:
                 pass
@@ -123,8 +125,15 @@ class EpigeneticController:
             else:
                 print(f"♻️  Cleanup: Old generation member ({pod_mark}), skipping Methylation.")
         elif self.resource_type == "StatefulSet":
+            # suddenly this looks same as above, so should probably consolidate this logic
             parent_name = "-".join(pod.metadata.name.split("-")[:-1])
-            self.methylate(parent_name)
+            current_mark = self.get_obj_methylation_level(name)
+
+            if pod_mark == current_mark:
+                print(f"💀 Stress: Lineage member {parent_name} died.")
+                self.methylate(parent_name)
+            else:
+                print(f"♻️  Cleanup: Old lineage member ({pod_mark}) died. Skipping.")
 
 
     def check_pods_stability(self):
