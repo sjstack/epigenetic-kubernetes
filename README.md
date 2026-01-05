@@ -1,111 +1,136 @@
-# Experiment: The Chaos Genome (Epigenetics in Kubernetes)
+# The Chaos Genome: Epigenetic Adaptation in Kubernetes
 
-## Hypothesis
-An organism (Kubernetes Deployment) that can dynamically alter its phenotype (Resource Limits) via epigenetic markers (Annotations) in response to environmental trauma (Chaos Mesh) will exhibit higher long-term "fitness" (stability) than a static organism.
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python](https://img.shields.io/badge/python-3.9+-blue.svg) ![Kubernetes](https://img.shields.io/badge/kubernetes-1.25+-green.svg)
 
-## Scientific Context
-In biological epigenetics, stressors cause **DNA methylation**, which modifies gene expression without changing the DNA sequence. 
-* **The DNA:** Your `manifests/organism.yaml` manifest.
-* **The Epigenetic Mark:** The `epigenetic-mark.science/methylation-level` annotation.
-* **The Phenotype:** The resulting CPU/Memory allocation of the pod.
+**A scientific simulation that treats Kubernetes workloads as biological organisms.**
 
-## Project Structure
-- `manifests/`: YAML definitions for the environment, organism, and stressors.
-- `controller/`: The Python-based "Epigenetic Engine" that monitors stress and applies markers.
-- `setup.sh`: Automated infrastructure deployment for DigitalOcean.
+This project tests the hypothesis that **epigenetic adaptation**—the dynamic modification of gene expression (resource limits) in response to environmental stress—creates more resilient distributed systems than static configurations.
+
+Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics.
+
+## 🧬 Context
+
+This experiment translates biological mechanisms directly into Cloud Native primitives:
+
+| Biological Concept | Kubernetes Implementation |
+| :--- | :--- |
+| **The Organism** | A `Deployment` (Clonal) or `StatefulSet` (Lineage). |
+| **The Phenotype** | The CPU/Memory requests defined in the Pod spec. |
+| **The Epigenetic Mark** | The `epigenetic-mark.science/methylation-level` annotation. |
+| **Methylation** | Increasing resource requests in response to "Cell Death" (Pod OOM/Crash). |
+| **Demethylation** | Actively shedding resources during stability. |
+
+### Demethylation
+In nature, methylation is not a one-way street; it is actively pruned to maintain homeostasis. 
+* **In this cluster:** If the organism remains stable (no restarts) for a set `STABILITY_WINDOW`, the controller actively "demethylates" the pod, reducing its resource consumption to prevent "resource hoarding" (over-provisioning).
+
+## 🏛️ Architecture
+
+* **`manifests/`**: Defines the "Environmental Stressors" (Chaos Mesh schedules).
+* **`charts/population/`**: A Helm chart defining the organism. Supports two evolutionary strategies:
+    * **Clonal:** A standard Deployment. All pods share the same "genetic" memory.
+    * **Transgenerational:** A StatefulSet. Each replica tracks its own unique lineage and adaptation history.
+* **`controller/epigenetic_controller.py`**: The "Central Nervous System." A class-based Python operator that:
+    1.  **Auto-detects** the organism strategy (Clonal vs. Lineage).
+    2.  **Monitors** for `DELETED` events (Cell Death).
+    3.  **Methylates** (scales up) survivors.
+    4.  **Demethylates** (scales down) during peace.
+* **`setup.sh`**: Automated lab technician. Provisions a cluster (DigitalOcean or local k3s), installs Chaos Mesh, and deploys the population.
 
 ---
 
-## Provision Infrastructure
-The `setup.sh` script handles both production (DOKS) and development (k3s on a single droplet) environments.
+## 🚀 Getting Started
 
-### For Development (k3s on Droplet)
-1. Find your SSH key fingerprint from DigitalOcean: `doctl compute ssh-key list`.
-2. Export the required variables and source the script:
-   ```bash
-   export EPIK_ENV=dev
-   export DO_SSH_KEY="your_ssh_key_fingerprint"
-   source setup.sh
-   ```
+### Prerequisites
+* [Docker](https://www.docker.com/) & [kubectl](https://kubernetes.io/docs/tasks/tools/)
+* [Helm](https://helm.sh/)
+* [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) (DigitalOcean CLI)
+* Python 3.9+
 
-### For Production (DOKS)
+### 1. Provision the Environment
+The `setup.sh` script handles the entire lifecycle. You can run in **Development** (k3s on a single Droplet) or **Production** (DOKS Cluster).
+
+**For Development (Recommended):**
 ```bash
-export EPIK_ENV=prod
+# Set your strategy: "clonal" (Deployment) or "transgenerational" (StatefulSet)
+export ORGANISM_STRATEGY="transgenerational" 
+export EPIK_ENV="dev"
+export DO_SSH_KEY="<your_ssh_fingerprint>"
+
 source setup.sh
 ```
+*The script will provision infrastructure, install Chaos Mesh, and deploy the initial population.*
 
-*Note: Sourcing the script ensures the `KUBECONFIG` environment variable is correctly set in your current session.*
+### 2. Start the Epigenetic Engine
+Once the cluster is ready, start the controller locally to begin the simulation.
 
----
-
-## Deploy the Clonal Organism
-Create the initial population of pods in the "ecological niche" (namespace):
 ```bash
-kubectl apply -f manifests/organism.yaml
+# Install dependencies
+pip install -r controller/requirements.txt
+
+# Run the controller
+python controller/epigenetic_controller.py
 ```
-**Verify Birth:**
-```bash
-kubectl get pods -n chaos-genome -l app=cell
-```
+**Output:**
+> `🦠 Epigenetic Controller initialized for namespace: chaos-genome`
+> `✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)`
+> `👁️ Controller active. Watching for stress events...`
 
----
+### 3. Inject Environmental Stress
+Without stress, the organism will remain at baseline (Methylation Level 0). Trigger a recurring "Pod Kill" event to force adaptation:
 
-## Prepare the Epigenetic Engine
-2. **Install Requirements:**
-   ```bash
-   pip install -r controller/requirements.txt
-   ```
-3. **Start Monitoring:**
-   ```bash
-   python controller/controller.py
-   ```
-   The engine will now watch for pod restarts in the `chaos-genome` namespace.
-
----
-
-## Unit Testing
-
-To run the unit tests for the controller:
-
-1.  **Install Test Requirements:**
-    ```bash
-    pip install -r controller/test_requirements.txt -r controller/requirements.txt
-    ```
-
-2.  **Run Tests:**
-    ```bash
-    python -m pytest controller/tests/
-    ```
-
----
-
-## Inject Environmental Stress
-Start the recurring "pod-kill" events using the Chaos Mesh `Schedule` manifest:
 ```bash
 kubectl apply -f manifests/chaos-experiment.yaml
 ```
 
 ---
 
-## Observations & Analysis
-* **Monitor Adaptation:** Watch the controller output. When a pod is killed, you should see: `🧬 Stress detected in [pod-name]. Methylating to level X...`.
-* **Verify Phenotype Change:** Check if the Deployment's CPU requests are increasing:
-  ```bash
-  kubectl describe deployment clonal-organism -n chaos-genome
-  ```
-* **Metric of Success:** Does the system become more resilient as CPU requests (phenotype) increase, or does it hit the cluster's carrying capacity?
+## 🔬 Observation & Analysis
+
+### Monitoring Adaptation (Methylation)
+Watch the controller logs. When Chaos Mesh kills a pod, the controller should react:
+> `💀 Stress: Member of current generation (0) died.`
+> `🧬 Stress detected in organism-0. Methylating to level 1...`
+
+### Monitoring Homeostasis (Demethylation)
+If you delete the Chaos Experiment (`kubectl delete -f manifests/chaos-experiment.yaml`) and wait for the `STABILITY_WINDOW` (default: 20s), you will see the demethylation kick in:
+> `🌿 Stability detected in organism-0. Demethylating to level 0...`
+
+### Verifying Phenotype
+Check the actual resource allocation of the pods to see the physical change:
+```bash
+kubectl describe pod -n chaos-genome -l app=cell
+```
+*Look for `Requests: cpu` increasing (e.g., `100m` -> `200m`) or decreasing.*
 
 ---
 
-## Cleanup
-To tear down the resources:
+## 🛠️ Development
 
-# For Development
+### Running Tests
+The project uses `pytest` with mocks for the Kubernetes API.
+
 ```bash
-doctl compute droplet delete chaos-genome-dev
+# Install test deps
+pip install -r controller/test_requirements.txt
+
+# Run suite
+python -m pytest controller/tests/
 ```
 
-# For Production
-```bash
-doctl k8s cluster delete chaos-genome-cluster
-```
+### Configuration
+You can tweak the experiment parameters via environment variables when running the controller:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `NAMESPACE` | `chaos-genome` | The K8s namespace for the experiment. |
+| `STRESS_THRESHOLD` | `1` | Restarts required to trigger methylation. |
+| `STABILITY_WINDOW` | `20` | Seconds of silence before demethylation begins. |
+
+---
+
+## ⚖️ License
+
+This project is open source under the [MIT License](LICENSE).
+
+Copyright (c) 2026 Scott J. Stackley
