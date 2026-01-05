@@ -12,6 +12,7 @@ class EpigeneticController:
         self.stability_window = int(os.getenv("STABILITY_WINDOW", "10"))
 
         self.last_event_time = time.time()
+        self.history = {}
 
         self.resource_type = self.get_resource_type_at_startup()
         if self.resource_type == "Deployment":
@@ -128,8 +129,8 @@ class EpigeneticController:
             # suddenly this looks same as above, so should probably consolidate this logic
             parent_name = "-".join(pod.metadata.name.split("-")[:-1])
             current_mark = self.get_obj_methylation_level(parent_name)
-            breakpoint()
-            print("HERE")
+
+            # still getting an issue with demethylation being see as "stress" and causing methylation
             if pod_mark == current_mark:
                 print(f"💀 Stress: Lineage member {parent_name} died.")
                 self.methylate(parent_name)
