@@ -6,7 +6,7 @@ CLUSTER_NAME="chaos-genome-cluster"
 REGION="nyc1"
 SSH_KEY_IDENTIFIER=${DO_SSH_KEY}
 
-ORGANISM_STRATEGY=${ORGANISM_STRATEGY:-"transgenerational"}
+STRATEGY=${ORGANISM_STRATEGY:-"transgenerational"}
 COUNT=${ORGANISM_COUNT:-5}
 
 if [ "$EPIK_ENV" == "prod" ]; then
@@ -72,7 +72,7 @@ curl -sSL https://mirrors.chaos-mesh.org/v2.6.1/install.sh | bash
 echo "⏳ Waiting for Chaos Mesh components to initialize..."
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=chaos-mesh -n chaos-mesh --timeout=300s
 
-echo "🏗️  Deploying the Organism Colony via Helm (Strategy: $ORGANISM_STRATEGY)..."
+echo "🏗️  Deploying the Organism via Helm (Strategy: $STRATEGY)..."
 if ! command -v helm &> /dev/null; then
     echo "❌ Error: Helm is not installed. Please install Helm to proceed."
     exit 1
@@ -81,8 +81,8 @@ fi
 helm upgrade --install population ./charts/population \
      --namespace chaos-genome \
      --create-namespace \
-     --set strategy=$ORGANISM_STRATEGY \
-     --set count=$ORGANISM_COUNT
+     --set strategy=$STRATEGY \
+     --set count=$COUNT
 
 echo "✅ Setup Complete. Your environment is ready for the organism."
 
