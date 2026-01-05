@@ -6,7 +6,7 @@
 
 This project tests the hypothesis that **epigenetic adaptation**—the dynamic modification of gene expression (resource limits) in response to environmental stress—creates more resilient distributed systems than static configurations.
 
-Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics.
+Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics (a subject that I know really nothing about).
 
 ## 🧬 Context
 
