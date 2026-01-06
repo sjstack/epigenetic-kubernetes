@@ -15,9 +15,9 @@ This experiment translates biological mechanisms directly into Cloud Native prim
 | Biological Concept | Kubernetes Implementation |
 | :--- | :--- |
 | **The Organism** | A `Deployment` (Clonal) or `StatefulSet` (Lineage). |
-| **The Phenotype** | The CPU/Memory requests defined in the Pod spec. |
+| **The Phenotype** | The CPU/Memory requests (idea is to expand this such that you could support any change to the deploy template) defined in the Pod spec. |
 | **The Epigenetic Mark** | The `epigenetic-mark.science/methylation-level` annotation. |
-| **Methylation** | Increasing resource requests in response to "Cell Death" (Pod OOM/Crash). |
+| **Methylation** | Increasing resource requests in response to "Cell Death" (Pod OOM/Crash for now, could be anything in the future, let your imagination of failure be your inspiration!). |
 | **Demethylation** | Actively shedding resources during stability. |
 
 ### Demethylation
