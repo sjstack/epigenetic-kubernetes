@@ -34,6 +34,10 @@ def main():
     print(f"🚀 Starting Epigenetic Controller in DEV MODE (Mock K8s)...")
     print(f"🧬 Strategy: {strategy.upper()}")
 
+    # Start heartbeat to keep the controller loop active/checking stability
+    mock_db.start_heartbeat(interval=5)
+    print("💓 Mock Heartbeat started (every 5s)")
+
     ctrl = EpigeneticController()
 
     # Run controller in background thread

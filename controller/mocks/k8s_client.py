@@ -47,9 +47,40 @@ class MockK8sDB:
         self.pods = {} # (name, ns) -> V1Pod
         self.deployments = {} # (name, ns) -> V1Deployment
         self.statefulsets = {} # (name, ns) -> V1StatefulSet
+        self.heartbeat_thread = None
+        self.stop_heartbeat = threading.Event()
 
         # Seed initial data
         self._seed_data()
+
+    def start_heartbeat(self, interval=5):
+        if self.heartbeat_thread and self.heartbeat_thread.is_alive():
+            return
+
+        self.stop_heartbeat.clear()
+        self.heartbeat_thread = threading.Thread(
+            target=self._heartbeat_loop,
+            args=(interval,),
+            daemon=True
+        )
+        self.heartbeat_thread.start()
+
+    def _heartbeat_loop(self, interval):
+        while not self.stop_heartbeat.is_set():
+            time.sleep(interval)
+            # Create a dummy heartbeat event (e.g., BOOKMARK or just a MODIFIED on a system object)
+            # Using MODIFIED on a dummy pod to ensure it wakes up the controller loop
+            # and counts as a "non-DELETED" event for check_pods_stability.
+            dummy_pod = V1Pod(
+                metadata=V1ObjectMeta(
+                    name="mock-heartbeat",
+                    namespace="kube-system",
+                    resource_version=str(int(time.time()))
+                )
+            )
+            # We bypass the queue.put directly to use trigger_event logic if needed,
+            # but trigger_event expects object serialization.
+            self.trigger_event("MODIFIED", dummy_pod)
 
     def _seed_data(self):
         strategy = os.getenv("ORGANISM_STRATEGY", "transgenerational")

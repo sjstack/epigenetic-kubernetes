@@ -88,6 +88,10 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     # If I set timeout, the loop breaks or yields nothing?
 
     # For this test, I will manually trigger an event after sleeping.
+    # Actually, we can now use the heartbeat or just trigger it.
+    # The heartbeat is not started by default in the test unless we call it.
+    # We will stick to manual trigger for deterministic testing, but we can verify heartbeat works too.
+    # But manual trigger is fine.
     time.sleep(3)
 
     # Trigger a dummy event to wake up the controller loop
@@ -97,7 +101,28 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     dummy_pod.metadata.name = "dummy"
     dummy_pod.metadata.namespace = "chaos-genome"
     dummy_pod.metadata.labels = {}
-    mock_db.trigger_event("MODIFIED", dummy_pod) # Or ADDED
+
+    # Use real trigger_event which sanitizes
+    # mock_db.trigger_event("MODIFIED", dummy_pod) # Or ADDED
+    # Wait, dummy_pod is MagicMock, sanitize might fail or produce empty dict.
+    # Let's use a real V1Pod or just ensure MagicMock has to_dict?
+    # The mock client implementation of trigger_event calls api.sanitize_for_serialization(obj).
+    # If obj is MagicMock, it might return {}.
+    # Previous tests passed with MagicMock?
+    # Ah, I added "ensure metadata exists" logic.
+    # Let's check if the previous test run actually worked or if I just assumed.
+    # It passed.
+
+    # But to be safe and consistent with heartbeat logic:
+    from kubernetes.client import V1Pod, V1ObjectMeta
+    dummy_pod_obj = V1Pod(
+        metadata=V1ObjectMeta(
+            name="dummy",
+            namespace="chaos-genome",
+            resource_version="1"
+        )
+    )
+    mock_db.trigger_event("MODIFIED", dummy_pod_obj)
 
     time.sleep(1)
 
