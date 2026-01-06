@@ -11,6 +11,7 @@ class EpigeneticController:
         self.stress_threshold = int(os.getenv("STRESS_THRESHOLD", "1"))
         self.stability_window = int(os.getenv("STABILITY_WINDOW", "10"))
 
+        self.demethylated_pods = set()
         self.last_event_time = time.time()
         self.history = {}
 
@@ -108,8 +109,6 @@ class EpigeneticController:
         
     
     def handle_stress_event(self, pod):
-        self.last_event_time = time.time()
-
         labels = pod.metadata.labels
         pod_mark = int(pod.metadata.annotations.get(
             "epigenetic-mark.science/methylation-level",
@@ -123,6 +122,7 @@ class EpigeneticController:
             if pod_mark == current_mark:
                 print(f"💀 Stress: Member of current generation ({pod_mark}) died.")
                 self.methylate(name)
+                self.last_event_time = time.time()
             else:
                 print(f"♻️  Cleanup: Old generation member ({pod_mark}), skipping Methylation.")
         elif self.resource_type == "StatefulSet":
@@ -131,11 +131,18 @@ class EpigeneticController:
             current_mark = self.get_obj_methylation_level(parent_name)
 
             # still getting an issue with demethylation being see as "stress" and causing methylation
-            if pod_mark == current_mark:
+            #if pod_mark == current_mark:
+            #    print(f"💀 Stress: Lineage member {parent_name} died.")
+            #    self.methylate(parent_name)
+            #else:
+            #    print(f"♻️  Cleanup: Old lineage member ({pod_mark}) died. Skipping.")
+            if parent_name in self.demethylated_pods:
+                self.demethylated_pods.discard(parent_name)
+                print(f"♻️  Cleanup: Old lineage member ({parent_name}) demethylated. Skipping.")
+            else:
                 print(f"💀 Stress: Lineage member {parent_name} died.")
                 self.methylate(parent_name)
-            else:
-                print(f"♻️  Cleanup: Old lineage member ({pod_mark}) died. Skipping.")
+                self.last_event_time = time.time()
 
 
     def check_pods_stability(self):
@@ -147,14 +154,14 @@ class EpigeneticController:
                     self.demethylate(name)
                 elif self.resource_type == "StatefulSet":
                     stateful_sets = self.apps_v1.list_namespaced_stateful_set(self.namespace)
-                    demethylation_occurred = False
 
                     for s_set in stateful_sets.items:
                         if s_set.metadata.name.startswith("organism-"):
-                            demthylation_occurred = self.demethylate(s_set.metadata.name)
+                            if self.demethylate(s_set.metadata.name):
+                                self.demethylated_pods.add(s_set.metadata.name)
+                                #self.last_event_time = current_time
 
-                    if demethylation_occurred:
-                        self.last_stress_time = current_time
+
             except Exception as e:
                 print(f"⚠️ Error in stability check: {e}")
 
