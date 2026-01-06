@@ -13,7 +13,8 @@ class EpigeneticController:
 
         self.demethylated_pods = set()
         self.last_event_time = time.time()
-        self.history = {}
+        #self.last_event_time = {}
+        #self.history = {}
 
         self.resource_type = self.get_resource_type_at_startup()
         if self.resource_type == "Deployment":
@@ -151,16 +152,18 @@ class EpigeneticController:
             try:
                 if self.resource_type == "Deployment":
                     name = "clonal-organism"
+                    #if current_time - self.last_event_time[name] > self.stability_window:
                     self.demethylate(name)
                 elif self.resource_type == "StatefulSet":
                     stateful_sets = self.apps_v1.list_namespaced_stateful_set(self.namespace)
 
                     for s_set in stateful_sets.items:
-                        if s_set.metadata.name.startswith("organism-"):
-                            if self.demethylate(s_set.metadata.name):
-                                self.demethylated_pods.add(s_set.metadata.name)
-                                #self.last_event_time = current_time
-
+                        name = s_set.metadata.name
+                        if name.startswith("organism-"):
+                            #if current_time - self.last_event_time[name] > self.stability_window:
+                            if self.demethylate(name):
+                                self.demethylated_pods.add(name)
+                                #self.last_event_time[name] = current_time
 
             except Exception as e:
                 print(f"⚠️ Error in stability check: {e}")
