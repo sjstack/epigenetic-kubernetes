@@ -42,7 +42,7 @@ class MockK8sDB:
         self.reset()
 
     def reset(self):
-        self.lock = threading.Lock()
+        self.lock = threading.RLock()
         self.event_queue = queue.Queue()
         self.pods = {} # (name, ns) -> V1Pod
         self.deployments = {} # (name, ns) -> V1Deployment
@@ -246,8 +246,8 @@ class MockK8sDB:
                         metadata=V1ObjectMeta(
                             name=new_name,
                             namespace=ns,
-                            labels=deploy.spec.template.metadata.labels,
-                            annotations=deploy.spec.template.metadata.annotations
+                            labels=copy.deepcopy(deploy.spec.template.metadata.labels),
+                            annotations=copy.deepcopy(deploy.spec.template.metadata.annotations)
                         ),
                         spec=deploy.spec.template.spec,
                         status=MagicMock()
@@ -264,8 +264,8 @@ class MockK8sDB:
                         metadata=V1ObjectMeta(
                             name=new_name,
                             namespace=ns,
-                            labels=ss.spec.template.metadata.labels,
-                            annotations=ss.spec.template.metadata.annotations
+                            labels=copy.deepcopy(ss.spec.template.metadata.labels),
+                            annotations=copy.deepcopy(ss.spec.template.metadata.annotations)
                         ),
                         spec=ss.spec.template.spec,
                         status=MagicMock()
@@ -324,15 +324,10 @@ class MockK8sDB:
                     if pns == namespace and pod.metadata.labels.get("strategy") == "clonal":
                          to_delete.append(pname)
 
-                # In real K8s, old pods terminate, new pods start.
-                # Here we just update the existing pods "in place" or replace them to simulate update
+                # Trigger deletion of old pods.
+                # This triggers DELETED event -> _recreate_pod timer -> creation of new pod with UPDATED deployment spec.
                 for pname in to_delete:
-                    # Update pod spec to match deployment
-                    pod = self.pods[(pname, namespace)]
-                    pod.metadata.annotations.update(deploy.spec.template.metadata.annotations)
-                    pod.spec.containers[0].resources.requests.update(
-                         deploy.spec.template.spec.containers[0].resources.requests
-                    )
+                    self.delete_pod(pname, namespace)
 
                 return deploy
             return None
@@ -369,12 +364,9 @@ class MockK8sDB:
                     if pns == namespace and pod.metadata.labels.get("lineage") == name:
                         to_delete.append(pname)
 
+                 # Trigger deletion of old pods.
                  for pname in to_delete:
-                    pod = self.pods[(pname, namespace)]
-                    pod.metadata.annotations.update(ss.spec.template.metadata.annotations)
-                    pod.spec.containers[0].resources.requests.update(
-                         ss.spec.template.spec.containers[0].resources.requests
-                    )
+                    self.delete_pod(pname, namespace)
 
                  return ss
             return None
