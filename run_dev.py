@@ -25,12 +25,14 @@ def print_help():
     print("\nAvailable commands:")
     print("  list              - List all pods")
     print("  kill <pod_name>   - Kill (delete) a pod to trigger stress")
-    print("  status            - Show deployment methylation level")
+    print("  status            - Show organism methylation level")
     print("  help              - Show this help")
     print("  exit              - Exit the program")
 
 def main():
-    print("🚀 Starting Epigenetic Controller in DEV MODE (Mock K8s)...")
+    strategy = os.getenv("ORGANISM_STRATEGY", "transgenerational")
+    print(f"🚀 Starting Epigenetic Controller in DEV MODE (Mock K8s)...")
+    print(f"🧬 Strategy: {strategy.upper()}")
 
     ctrl = EpigeneticController()
 
@@ -78,12 +80,22 @@ def main():
             else:
                 print(f"❌ Pod '{pod_name}' not found.")
         elif cmd == "status":
-            deploy = mock_db.get_deployment("clonal-organism", "chaos-genome")
-            if deploy:
-                level = deploy.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level", "0")
-                print(f"🧬 Clonal Organism Methylation Level: {level}")
+            strategy = os.getenv("ORGANISM_STRATEGY", "transgenerational")
+            if strategy == "clonal":
+                deploy = mock_db.get_deployment("clonal-organism", "chaos-genome")
+                if deploy:
+                    level = deploy.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level", "0")
+                    print(f"🧬 Clonal Organism (Deployment) Methylation Level: {level}")
+                else:
+                    print("⚠️  Deployment 'clonal-organism' not found.")
             else:
-                print("⚠️  Deployment 'clonal-organism' not found.")
+                # Transgenerational (StatefulSet)
+                ss = mock_db.get_statefulset("organism-0", "chaos-genome")
+                if ss:
+                    level = ss.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level", "0")
+                    print(f"🧬 Organism-0 (StatefulSet) Methylation Level: {level}")
+                else:
+                    print("⚠️  StatefulSet 'organism-0' not found.")
         else:
             print(f"Unknown command: {cmd}")
 

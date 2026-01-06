@@ -52,7 +52,7 @@ def methylate_organism(apps_v1, resource_type, name, current_level):
        }
    }
 
-   if resource_type in ["Deployment", "Colony"]:
+   if resource_type == "Deployment":
        apps_v1.patch_namespaced_deployment(name, NAMESPACE, body)
    else:
        apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)
@@ -84,7 +84,7 @@ def demethylate_organism(apps_v1, resource_type, name, current_level):
         }
     }
 
-    if resource_type in ["Deployment", "Colony"]:
+    if resource_type == "Deployment":
         apps_v1.patch_namespaced_deployment(name, NAMESPACE, body)
     else:
         apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)

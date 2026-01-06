@@ -9,12 +9,13 @@ from controller.mocks.k8s_client import mock_db
 @pytest.fixture
 def mock_env(monkeypatch):
     monkeypatch.setenv("MOCK_K8S", "true")
+    monkeypatch.setenv("ORGANISM_STRATEGY", "clonal")
     monkeypatch.setenv("NAMESPACE", "chaos-genome")
     monkeypatch.setenv("STRESS_THRESHOLD", "1")
     monkeypatch.setenv("STABILITY_WINDOW", "2") # Short window for testing
 
 @pytest.fixture(autouse=True)
-def reset_mock_db():
+def reset_mock_db(mock_env):
     mock_db.reset()
 
 def test_epigenetic_controller_mock(mock_env, reset_mock_db):
