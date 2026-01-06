@@ -12,8 +12,7 @@ class EpigeneticController:
         self.stability_window = int(os.getenv("STABILITY_WINDOW", "10"))
 
         self.demethylated_pods = set()
-        self.last_event_time = time.time()
-        #self.last_event_time = {}
+        self.last_event_time = {}
         #self.history = {}
 
         self.resource_type = self.get_resource_type_at_startup()
@@ -123,50 +122,52 @@ class EpigeneticController:
             if pod_mark == current_mark:
                 print(f"💀 Stress: Member of current generation ({pod_mark}) died.")
                 self.methylate(name)
-                self.last_event_time = time.time()
+                self.last_event_time[name] = time.time()
             else:
-                print(f"♻️  Cleanup: Old generation member ({pod_mark}), skipping Methylation.")
+                print(f"♻️  Cleanup: Old generation member ({pod_mark}) from demethylation.")
+
         elif self.resource_type == "StatefulSet":
             # suddenly this looks same as above, so should probably consolidate this logic
             parent_name = "-".join(pod.metadata.name.split("-")[:-1])
             current_mark = self.get_obj_methylation_level(parent_name)
 
-            # still getting an issue with demethylation being see as "stress" and causing methylation
-            #if pod_mark == current_mark:
-            #    print(f"💀 Stress: Lineage member {parent_name} died.")
-            #    self.methylate(parent_name)
-            #else:
-            #    print(f"♻️  Cleanup: Old lineage member ({pod_mark}) died. Skipping.")
             if parent_name in self.demethylated_pods:
                 self.demethylated_pods.discard(parent_name)
-                print(f"♻️  Cleanup: Old lineage member ({parent_name}) demethylated. Skipping.")
+                print(f"♻️  Cleanup: Old lineage member ({parent_name}) from demethylation.")
             else:
                 print(f"💀 Stress: Lineage member {parent_name} died.")
                 self.methylate(parent_name)
-                self.last_event_time = time.time()
+                self.last_event_time[parent_name] = time.time()
 
 
     def check_pods_stability(self):
         current_time = time.time()
-        if current_time - self.last_event_time > self.stability_window:
-            try:
-                if self.resource_type == "Deployment":
-                    name = "clonal-organism"
-                    #if current_time - self.last_event_time[name] > self.stability_window:
-                    self.demethylate(name)
-                elif self.resource_type == "StatefulSet":
-                    stateful_sets = self.apps_v1.list_namespaced_stateful_set(self.namespace)
 
-                    for s_set in stateful_sets.items:
-                        name = s_set.metadata.name
-                        if name.startswith("organism-"):
-                            #if current_time - self.last_event_time[name] > self.stability_window:
+        try:
+            if self.resource_type == "Deployment":
+                name = "clonal-organism"
+                stability_dur = current_time - self.last_event_time.get(name, current_time)
+
+                if stability_dur > self.stability_window:
+                    self.demethylate(name)
+                    self.last_event_time[name] = current_time
+
+            elif self.resource_type == "StatefulSet":
+                stateful_sets = self.apps_v1.list_namespaced_stateful_set(self.namespace)
+                
+                for s_set in stateful_sets.items:
+                    name = s_set.metadata.name
+
+                    if name.startswith("organism-"):
+                        stability_dur = current_time - self.last_event_time.get(name, current_time)
+
+                        if stability_dur > self.stability_window:
                             if self.demethylate(name):
                                 self.demethylated_pods.add(name)
-                                #self.last_event_time[name] = current_time
+                                self.last_event_time[name] = current_time
 
-            except Exception as e:
-                print(f"⚠️ Error in stability check: {e}")
+        except Exception as e:
+            print(f"⚠️ Error in stability check: {e}")
 
 
     def run(self):
