@@ -1,4 +1,4 @@
-# The Chaos Genome: Epigenetic Adaptation in Kubernetes
+# Epigenetic Adaptation in Kubernetes
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python](https://img.shields.io/badge/python-3.9+-blue.svg) ![Kubernetes](https://img.shields.io/badge/kubernetes-1.25+-green.svg)
 
@@ -6,7 +6,7 @@
 
 This project tests the hypothesis that **epigenetic adaptation**—the dynamic modification of gene expression (resource limits) in response to environmental stress—creates more resilient distributed systems than static configurations.
 
-Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics.
+Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics (a subject that I know really nothing about).
 
 ## 🧬 Context
 
@@ -72,10 +72,11 @@ pip install -r controller/requirements.txt
 python controller/epigenetic_controller.py
 ```
 **Output:**
-> `🦠 Epigenetic Controller initialized for namespace: chaos-genome`
-> `✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)`
-> `👁️ Controller active. Watching for stress events...`
-
+```bash
+> 🦠 Epigenetic Controller initialized for namespace: chaos-genome
+> ✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)
+> 👁️ Controller active. Watching for stress events...
+```
 ### 3. Inject Environmental Stress
 Without stress, the organism will remain at baseline (Methylation Level 0). Trigger a recurring "Pod Kill" event to force adaptation:
 
@@ -89,13 +90,15 @@ kubectl apply -f manifests/chaos-experiment.yaml
 
 ### Monitoring Adaptation (Methylation)
 Watch the controller logs. When Chaos Mesh kills a pod, the controller should react:
-> `💀 Stress: Member of current generation (0) died.`
-> `🧬 Stress detected in organism-0. Methylating to level 1...`
-
+```bash
+> 💀 Stress: Member of current generation (0) died.
+> 🧬 Stress detected in organism-0. Methylating to level 1...
+```
 ### Monitoring Homeostasis (Demethylation)
 If you delete the Chaos Experiment (`kubectl delete -f manifests/chaos-experiment.yaml`) and wait for the `STABILITY_WINDOW` (default: 20s), you will see the demethylation kick in:
-> `🌿 Stability detected in organism-0. Demethylating to level 0...`
-
+```bash
+> 🌿 Stability detected in organism-0. Demethylating to level 0...
+```
 ### Verifying Phenotype
 Check the actual resource allocation of the pods to see the physical change:
 ```bash
