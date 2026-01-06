@@ -11,6 +11,11 @@ LAST_STRESS_TIME = time.time()
 STABILITY_WINDOW = 20 # seconds
 
 def get_k8s_client():
+    if os.getenv("MOCK_K8S") == "true":
+        print("Using Mock K8s Client")
+        from controller.mocks.k8s_client import MockCoreV1Api, MockAppsV1Api
+        return MockCoreV1Api(), MockAppsV1Api()
+
     # Load K8s config (In-cluster if deployed, local if testing)
     try:
         config.load_incluster_config()
@@ -47,7 +52,7 @@ def methylate_organism(apps_v1, resource_type, name, current_level):
        }
    }
 
-   if resource_type == "Deployment":
+   if resource_type in ["Deployment", "Colony"]:
        apps_v1.patch_namespaced_deployment(name, NAMESPACE, body)
    else:
        apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)
@@ -79,7 +84,7 @@ def demethylate_organism(apps_v1, resource_type, name, current_level):
         }
     }
 
-    if resource_type == "Deployment":
+    if resource_type in ["Deployment", "Colony"]:
         apps_v1.patch_namespaced_deployment(name, NAMESPACE, body)
     else:
         apps_v1.patch_namespaced_stateful_set(name, NAMESPACE, body)
@@ -139,8 +144,8 @@ def monitor_cell_lifespan(v1, apps_v1):
                 
                 if labels.get("strategy") == "clonal":
                     deployment = apps_v1.read_namespaced_deployment("clonal-organism", NAMESPACE)
-                    current_mark = int(deployment.spaec.template.metadata.annotations.get(
-                        "epigenetic-emark.science/methylation-level",
+                    current_mark = int(deployment.spec.template.metadata.annotations.get(
+                        "epigenetic-mark.science/methylation-level",
                         "0"
                     ))
                     

@@ -27,6 +27,11 @@ class EpigeneticController:
 
 
     def load_kubernetes_config(self):
+        if os.getenv("MOCK_K8S") == "true":
+            print("Using Mock K8s Client")
+            from controller.mocks.k8s_client import MockCoreV1Api, MockAppsV1Api
+            return MockCoreV1Api(), MockAppsV1Api()
+
         try:
             config.load_incluster_config()
         except config.ConfigException:
