@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import MagicMock, patch, call
 from controller.epigenetic_controller import EpigeneticController
 
-NAMESPACE = "chaos-genome"
+NAMESPACE = "epigenetik"
 
 @pytest.fixture
 def mock_k8s_client(mocker):

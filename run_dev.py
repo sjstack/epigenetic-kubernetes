@@ -70,8 +70,8 @@ def main():
         elif cmd == "help":
             print_help()
         elif cmd == "list":
-            pods = mock_db.list_pods("chaos-genome").items
-            print(f"\nFound {len(pods)} pods in 'chaos-genome':")
+            pods = mock_db.list_pods("epigenetik").items
+            print(f"\nFound {len(pods)} pods in 'epigenetik':")
             for p in pods:
                 print(f" - {p.metadata.name} (Labels: {p.metadata.labels})")
         elif cmd == "kill":
@@ -79,14 +79,14 @@ def main():
                 print("Usage: kill <pod_name>")
                 continue
             pod_name = args[0]
-            if mock_db.delete_pod(pod_name, "chaos-genome"):
+            if mock_db.delete_pod(pod_name, "epigenetik"):
                 print(f"💥 Pod '{pod_name}' deleted.")
             else:
                 print(f"❌ Pod '{pod_name}' not found.")
         elif cmd == "status":
             strategy = os.getenv("ORGANISM_STRATEGY", "transgenerational")
             if strategy == "clonal":
-                deploy = mock_db.get_deployment("clonal-organism", "chaos-genome")
+                deploy = mock_db.get_deployment("clonal-organism", "epigenetik")
                 if deploy:
                     level = deploy.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level", "0")
                     print(f"🧬 Clonal Organism (Deployment) Methylation Level: {level}")
@@ -94,7 +94,7 @@ def main():
                     print("⚠️  Deployment 'clonal-organism' not found.")
             else:
                 # Transgenerational (StatefulSet)
-                ss = mock_db.get_statefulset("organism-0", "chaos-genome")
+                ss = mock_db.get_statefulset("organism-0", "epigenetik")
                 if ss:
                     level = ss.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level", "0")
                     print(f"🧬 Organism-0 (StatefulSet) Methylation Level: {level}")

@@ -2,7 +2,7 @@
 
 # Configuration
 EPIK_ENV=${EPIK_ENV:-"dev"}
-CLUSTER_NAME="chaos-genome-cluster"
+CLUSTER_NAME="epigenetik-cluster"
 REGION="nyc1"
 SSH_KEY_IDENTIFIER=${DO_SSH_KEY}
 
@@ -29,7 +29,7 @@ else
         exit 1
     fi
     
-    DROPLET_NAME="chaos-genome-dev"
+    DROPLET_NAME="epigenetik-dev"
     DROPLET_SIZE="s-1vpcu-2gb" # I need to figure out if this size droplet is big or small enough
 
     echo "📦 Creating Droplet: $DROPLET_NAME with SSH Key: $SSH_KEY_IDENTIFIER..."
@@ -79,7 +79,7 @@ if ! command -v helm &> /dev/null; then
 fi
 
 helm upgrade --install population ./charts/population \
-     --namespace chaos-genome \
+     --namespace epigenetik \
      --create-namespace \
      --set strategy=$STRATEGY \
      --set count=$COUNT

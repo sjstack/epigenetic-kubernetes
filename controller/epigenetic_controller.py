@@ -7,7 +7,7 @@ class EpigeneticController:
     def __init__(self):
         self.v1, self.apps_v1 = self.load_kubernetes_config()
 
-        self.namespace = os.getenv("NAMESPACE", "chaos-genome")
+        self.namespace = os.getenv("NAMESPACE", "epigenetik")
         self.stress_threshold = int(os.getenv("STRESS_THRESHOLD", "1"))
         self.stability_window = int(os.getenv("STABILITY_WINDOW", "10"))
 
