@@ -84,7 +84,7 @@ class MockK8sDB:
 
     def _seed_data(self):
         strategy = os.getenv("ORGANISM_STRATEGY", "transgenerational")
-        ns = "chaos-genome"
+        ns = "epigenetik"
 
         if strategy == "clonal":
             # Default seed: Clonal Organism Deployment
@@ -415,5 +415,5 @@ class MockAppsV1Api:
         return self.db.list_statefulsets(namespace)
 
 # Helper to simulate chaos
-def simulate_pod_deletion(pod_name, namespace="chaos-genome"):
+def simulate_pod_deletion(pod_name, namespace="epigenetik"):
     mock_db.delete_pod(pod_name, namespace)

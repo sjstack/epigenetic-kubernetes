@@ -10,7 +10,7 @@ from controller.mocks.k8s_client import mock_db
 def mock_env(monkeypatch):
     monkeypatch.setenv("MOCK_K8S", "true")
     monkeypatch.setenv("ORGANISM_STRATEGY", "clonal")
-    monkeypatch.setenv("NAMESPACE", "chaos-genome")
+    monkeypatch.setenv("NAMESPACE", "epigenetik")
     monkeypatch.setenv("STRESS_THRESHOLD", "1")
     monkeypatch.setenv("STABILITY_WINDOW", "2") # Short window for testing
 
@@ -41,22 +41,22 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     # --- STRESS PHASE ---
     print("\n--- Triggering Stress (Pod Deletion) ---")
     pod_name = "clonal-organism-pod-1"
-    assert mock_db.get_pod(pod_name, "chaos-genome") is not None
+    assert mock_db.get_pod(pod_name, "epigenetik") is not None
 
-    mock_db.delete_pod(pod_name, "chaos-genome")
+    mock_db.delete_pod(pod_name, "epigenetik")
 
     # Wait for reaction (methylation)
     time.sleep(1)
 
     # Verify methylation
-    deploy = mock_db.get_deployment("clonal-organism", "chaos-genome")
+    deploy = mock_db.get_deployment("clonal-organism", "epigenetik")
     level = deploy.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level")
     print(f"Methylation Level after stress: {level}")
     assert level == "1"
 
     # Verify new pod created by mock controller has the new level
     # We need to find the new pod.
-    pods = mock_db.list_pods("chaos-genome").items
+    pods = mock_db.list_pods("epigenetik").items
     new_pod = None
     for p in pods:
         if p.metadata.name != pod_name and p.metadata.labels.get("strategy") == "clonal":
@@ -99,7 +99,7 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     print("Triggering dummy event to wake up controller...")
     dummy_pod = MagicMock()
     dummy_pod.metadata.name = "dummy"
-    dummy_pod.metadata.namespace = "chaos-genome"
+    dummy_pod.metadata.namespace = "epigenetik"
     dummy_pod.metadata.labels = {}
 
     # Use real trigger_event which sanitizes
@@ -118,7 +118,7 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     dummy_pod_obj = V1Pod(
         metadata=V1ObjectMeta(
             name="dummy",
-            namespace="chaos-genome",
+            namespace="epigenetik",
             resource_version="1"
         )
     )
@@ -127,7 +127,7 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     time.sleep(1)
 
     # Verify Demethylation
-    deploy = mock_db.get_deployment("clonal-organism", "chaos-genome")
+    deploy = mock_db.get_deployment("clonal-organism", "epigenetik")
     level = deploy.spec.template.metadata.annotations.get("epigenetic-mark.science/methylation-level")
     print(f"Methylation Level after stability: {level}")
     assert level == "0"

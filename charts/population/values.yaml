@@ -1,4 +1,4 @@
-namespace: chaos-genome
+namespace: epigenetik
 image: python:3.9-slim
 baseCpu: 100
 baseMemory: 64

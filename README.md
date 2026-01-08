@@ -73,7 +73,7 @@ python controller/epigenetic_controller.py
 ```
 **Output:**
 ```bash
-> 🦠 Epigenetic Controller initialized for namespace: chaos-genome
+> 🦠 Epigenetic Controller initialized for namespace: epigenetik
 > ✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)
 > 👁️ Controller active. Watching for stress events...
 ```
@@ -102,7 +102,7 @@ If you delete the Chaos Experiment (`kubectl delete -f manifests/chaos-experimen
 ### Verifying Phenotype
 Check the actual resource allocation of the pods to see the physical change:
 ```bash
-kubectl describe pod -n chaos-genome -l app=cell
+kubectl describe pod -n epigenetik -l app=cell
 ```
 *Look for `Requests: cpu` increasing (e.g., `100m` -> `200m`) or decreasing.*
 
@@ -126,7 +126,7 @@ You can tweak the experiment parameters via environment variables when running t
 
 | Variable | Default | Description |
 | :--- | :--- | :--- |
-| `NAMESPACE` | `chaos-genome` | The K8s namespace for the experiment. |
+| `NAMESPACE` | `epigenetik` | The K8s namespace for the experiment. |
 | `STRESS_THRESHOLD` | `1` | Restarts required to trigger methylation. |
 | `STABILITY_WINDOW` | `20` | Seconds of silence before demethylation begins. |
 
