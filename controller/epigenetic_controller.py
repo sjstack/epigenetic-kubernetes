@@ -1,5 +1,6 @@
 import os
 import time
+import json
 
 from kubernetes import client, config, watch
 
@@ -10,6 +11,12 @@ class EpigeneticController:
         self.namespace = os.getenv("NAMESPACE", "epigenetik")
         self.stress_threshold = int(os.getenv("STRESS_THRESHOLD", "1"))
         self.stability_window = int(os.getenv("STABILITY_WINDOW", "10"))
+        self.target_attribute = os.getenv(
+            "TARGET_ATTRIBUTE",
+            "spec.template.spec.containers[0].resources.requests.cpu"
+        )
+        self.mutation_type = os.getenvv("MUTATION_TYPE", "add")
+        self.mutation_value = int(os.getenv("MUTATION_VALUE", "100"))
 
         self.demethylated_pods = set()
         self.last_event_time = {}
@@ -92,6 +99,15 @@ class EpigeneticController:
         }
 
         self.patch_namespaced_obj(name, self.namespace, body)
+
+
+    def methylate2(self, name):
+        obj = self.read_namespaced_obj(name, self.namespace)
+
+        history_json = obj.metadata.annotations.get(
+            "epigenetic-mark.science/mutation-history", "[]"
+        )
+        history_stack = json.loads(history_json)
 
 
     def methylate(self, name):
