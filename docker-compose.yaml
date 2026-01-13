@@ -1,0 +1,30 @@
+services:
+  mock-k8s:
+    build:
+      context: .
+      dockerfile: controller/mocks/Dockerfile
+    ports:
+      - "6443:6443"
+    environment:
+      - ORGANISM_STRATEGY=transgenerational
+      - MOCK_K8S=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6443/api/v1/namespaces/epigenetik/pods"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 2s
+
+
+  controller:
+    build:
+      context: .
+      dockerfile: controller/Dockerfile
+    depends_on:
+      mock-k8s:
+        condition: service_healthy
+    environment:
+      - KUBE_API_URL=http://mock-k8s:6443
+      - NAMESPACE=epigenetik
+      - STRESS_THRESHOLD=1
+      - STABILITY_WINDOW=10

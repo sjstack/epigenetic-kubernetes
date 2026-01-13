@@ -27,6 +27,14 @@ class EpigeneticController:
 
 
     def load_kubernetes_config(self):
+        api_url = os.getenv("KUBE_API_URL")
+        if api_url:
+            print(f"🌐 Connecting to Kubernetes API at: {api_url}")
+            configuration = client.Configuration()
+            configuration.host = api_url
+            api_client = client.ApiClient(configuration)
+            return client.CoreV1Api(api_client), client.AppsV1Api(api_client)
+            
         if os.getenv("MOCK_K8S") == "true":
             print("Using Mock K8s Client")
             from controller.mocks.k8s_client import MockCoreV1Api, MockAppsV1Api
