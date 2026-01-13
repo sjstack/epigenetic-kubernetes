@@ -101,6 +101,12 @@ class EpigeneticController:
         self.patch_namespaced_obj(name, self.namespace, body)
 
 
+    def get_nested_value(self, obj_dict, path):
+        key = path.replace("]", "").split(".")
+        keys = [int(k) if "[" in k else k for k in keys if k]
+        pass
+
+
     def methylate2(self, name):
         obj = self.read_namespaced_obj(name, self.namespace)
 
@@ -109,6 +115,21 @@ class EpigeneticController:
         )
         history_stack = json.loads(history_json)
 
+        obj_dict = self.api_client.sanitize_for_serialization(obj)
+        current_value = self.get_nestsed_value(obj_dict, self.target_attribute)
+
+        #still need to add this function
+        new_value = self.calculate_next_value(current_value)
+        stack_entry = {
+            "level": len(history_stack)+1,
+            "previous_value": current_value,
+            "timestamp": time.time()
+        }
+        history_stack.append(stack_entry)
+
+        print(f"🧬 Methylating {name}: {current_value} -> {new_value}")
+        self.apply_mutation(name, new_value, history_stack)
+
 
     def methylate(self, name):
         current_level = self.get_obj_methylation_level(name)
@@ -116,6 +137,24 @@ class EpigeneticController:
 
         print(f"🧬 Stress detected in {name}. Methylating to level {new_level}...")
         self.patch_kubernetes_obj(name, new_level)
+
+
+    def demethylate2(self, name):
+        obj = self.read_namespaced_obj(name, self.namespace)
+        history_json = obj.metadata.annotations.get(
+            "epigenetic-mark.science/mutation-history", "[]"
+        )
+        history_stack = json.loads(history_json)
+
+        if not history_stack:
+            return False
+
+        last_entry = history_stack.pop()
+        restore_value = last_entry["previous_value"]
+        print(f"🌿 Demethylating {name}: Restoring {restore_value}")
+        self.apply_mutation(name, restore_value, history_stack)
+
+        return True
 
 
     def demethylate(self, name):
