@@ -15,12 +15,11 @@ class EpigeneticController:
             "TARGET_ATTRIBUTE",
             "spec.template.spec.containers[0].resources.requests.cpu"
         )
-        self.mutation_type = os.getenvv("MUTATION_TYPE", "add")
+        self.mutation_type = os.getenv("MUTATION_TYPE", "add")
         self.mutation_value = int(os.getenv("MUTATION_VALUE", "100"))
 
         self.demethylated_pods = set()
         self.last_event_time = {}
-        #self.history = {}
 
         self.resource_type = self.get_resource_type_at_startup()
         if self.resource_type == "Deployment":
@@ -128,6 +127,7 @@ class EpigeneticController:
         history_stack.append(stack_entry)
 
         print(f"🧬 Methylating {name}: {current_value} -> {new_value}")
+        #still need to add this function
         self.apply_mutation(name, new_value, history_stack)
 
 
@@ -174,7 +174,7 @@ class EpigeneticController:
             "epigenetic-mark.science/methylation-level",
             "0"
         ))
-
+        
         if self.resource_type == "Deployment":
             name = "clonal-organism"
             current_mark = self.get_obj_methylation_level(name)
@@ -187,7 +187,6 @@ class EpigeneticController:
                 print(f"♻️  Cleanup: Old generation member ({pod_mark}) from demethylation.")
 
         elif self.resource_type == "StatefulSet":
-            # suddenly this looks same as above, so should probably consolidate this logic
             parent_name = "-".join(pod.metadata.name.split("-")[:-1])
             current_mark = self.get_obj_methylation_level(parent_name)
 
