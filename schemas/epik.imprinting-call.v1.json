@@ -1,0 +1,15 @@
+{
+  "$id": "epik.imprinting-call.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema"
+  ],
+  "title": "Imprinting calls",
+  "type": "object"
+}

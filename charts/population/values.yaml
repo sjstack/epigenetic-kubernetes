@@ -6,5 +6,5 @@ baseMemory: 64
 # either "clonal" or "transgenerational"
 strategy: "transgenerational"
 
-# is replicaCount for clonal, a different thing for transgenerational
-Count: 5
+# replica count for clonal; number of independent lineages for transgenerational
+count: 5

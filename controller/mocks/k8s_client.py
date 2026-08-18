@@ -1,12 +1,27 @@
+import copy
 import json
+import logging
+import os
 import queue
 import threading
-import copy
-import logging
 import time
-import os
 from unittest.mock import MagicMock
-from kubernetes.client import V1Pod, V1PodList, V1Deployment, V1StatefulSet, V1StatefulSetList, V1ObjectMeta, V1PodSpec, V1Container, V1ResourceRequirements, V1PodTemplateSpec, V1DeploymentSpec, V1StatefulSetSpec, V1LabelSelector
+
+from kubernetes.client import (
+    V1Container,
+    V1Deployment,
+    V1DeploymentSpec,
+    V1LabelSelector,
+    V1ObjectMeta,
+    V1Pod,
+    V1PodList,
+    V1PodSpec,
+    V1PodTemplateSpec,
+    V1ResourceRequirements,
+    V1StatefulSet,
+    V1StatefulSetList,
+    V1StatefulSetSpec,
+)
 
 logger = logging.getLogger(__name__)
 

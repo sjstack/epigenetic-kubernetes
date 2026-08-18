@@ -1,0 +1,6 @@
+namespace: epik
+image: epik:1.0.0
+cross: ColxCvi
+seed: 1
+toDap: 7
+replicas: 1

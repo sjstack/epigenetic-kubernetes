@@ -1,0 +1,79 @@
+[project]
+name = "epik"
+version = "1.0.0"
+description = "Gehring-aligned Arabidopsis seed epigenetics simulator implemented with Kubernetes"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Scott J. Stackley" }]
+dependencies = [
+    "kubernetes==31.0.0",
+    "python-dotenv==1.0.1",
+    "PyYAML==6.0.1",
+    "jsonschema==4.23.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "pytest-mock==3.14.0",
+    "ruff==0.8.6",
+    "import-linter==2.1",
+]
+
+[project.scripts]
+epik = "epik.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+epik = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "controller/tests"]
+pythonpath = [".", "src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "controller"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]
+
+[tool.importlinter]
+root_packages = ["epik"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Biological kernel must not import Kubernetes or application ports"
+type = "forbidden"
+source_modules = [
+    "epik.engine",
+    "epik.model",
+    "epik.mechanisms",
+]
+forbidden_modules = [
+    "kubernetes",
+    "epik.operator",
+    "epik.api",
+    "epik.integration",
+    "epik.agents",
+]
+
+[[tool.importlinter.contracts]]
+name = "PhenotypeAdapter must not import engine write surfaces"
+type = "forbidden"
+source_modules = ["epik.integration.adapter"]
+forbidden_modules = [
+    "epik.engine.engine",
+    "epik.engine.reducer",
+    "epik.mechanisms",
+]

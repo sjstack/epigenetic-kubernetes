@@ -3,8 +3,12 @@ import time
 
 from kubernetes import client, config, watch
 
+
 class EpigeneticController:
-    def __init__(self):
+    def __init__(self, clock=time.time, sleeper=time.sleep):
+        self.clock = clock
+        self.sleeper = sleeper
+        self.transition_log = []
         self.v1, self.apps_v1 = self.load_kubernetes_config()
 
         self.namespace = os.getenv("NAMESPACE", "epigenetik")
@@ -23,13 +27,17 @@ class EpigeneticController:
             self.read_namespaced_obj = self.apps_v1.read_namespaced_stateful_set
             self.patch_namespaced_obj = self.apps_v1.patch_namespaced_stateful_set
 
-        print(f"🦠 Epigenetic Controller initialized for namespace: {self.namespace}")
+        self.log(f"🦠 Epigenetic Controller initialized for namespace: {self.namespace}")
+
+    def log(self, message: str) -> None:
+        print(message)
+        self.transition_log.append(message)
 
 
     def load_kubernetes_config(self):
         if os.getenv("MOCK_K8S") == "true":
             print("Using Mock K8s Client")
-            from controller.mocks.k8s_client import MockCoreV1Api, MockAppsV1Api
+            from controller.mocks.k8s_client import MockAppsV1Api, MockCoreV1Api
             return MockCoreV1Api(), MockAppsV1Api()
 
         try:
@@ -44,19 +52,19 @@ class EpigeneticController:
         while True:
             try:
                 self.apps_v1.read_namespaced_deployment("clonal-organism", self.namespace)
-                print("✅ Detected Strategy: CLONAL (Resource: Deployment)")
+                self.log("✅ Detected Strategy: CLONAL (Resource: Deployment)")
                 return "Deployment"
             except client.exceptions.ApiException:
                 pass
 
             try:
                 self.apps_v1.read_namespaced_stateful_set("organism-0", self.namespace)
-                print("✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)")
+                self.log("✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)")
                 return "StatefulSet"
             except client.exceptions.ApiException:
                 pass
 
-            time.sleep(5)
+            self.sleeper(5)
 
 
     def get_obj_methylation_level(self, name):
@@ -98,7 +106,7 @@ class EpigeneticController:
         current_level = self.get_obj_methylation_level(name)
         new_level = current_level+1
 
-        print(f"🧬 Stress detected in {name}. Methylating to level {new_level}...")
+        self.log(f"🧬 Stress detected in {name}. Methylating to level {new_level}...")
         self.patch_kubernetes_obj(name, new_level)
 
 
@@ -108,13 +116,12 @@ class EpigeneticController:
             return False
         new_level = current_level-1
 
-        print(f"🌿 Stability detected in {name}. Demethylating to level {new_level}...")
+        self.log(f"🌿 Stability detected in {name}. Demethylating to level {new_level}...")
         self.patch_kubernetes_obj(name, new_level)
         return True
         
     
     def handle_stress_event(self, pod):
-        labels = pod.metadata.labels
         pod_mark = int(pod.metadata.annotations.get(
             "epigenetic-mark.science/methylation-level",
             "0"
@@ -125,11 +132,11 @@ class EpigeneticController:
             current_mark = self.get_obj_methylation_level(name)
 
             if pod_mark == current_mark:
-                print(f"💀 Stress: Member of current generation ({pod_mark}) died.")
+                self.log(f"💀 Stress: Member of current generation ({pod_mark}) died.")
                 self.methylate(name)
-                self.last_event_time[name] = time.time()
+                self.last_event_time[name] = self.clock()
             else:
-                print(f"♻️  Cleanup: Old generation member ({pod_mark}) from demethylation.")
+                self.log(f"♻️  Cleanup: Old generation member ({pod_mark}) from demethylation.")
 
         elif self.resource_type == "StatefulSet":
             # suddenly this looks same as above, so should probably consolidate this logic
@@ -138,15 +145,15 @@ class EpigeneticController:
 
             if parent_name in self.demethylated_pods:
                 self.demethylated_pods.discard(parent_name)
-                print(f"♻️  Cleanup: Old lineage member ({parent_name}) from demethylation.")
+                self.log(f"♻️  Cleanup: Old lineage member ({parent_name}) from demethylation.")
             else:
-                print(f"💀 Stress: Lineage member {parent_name} died.")
+                self.log(f"💀 Stress: Lineage member {parent_name} died.")
                 self.methylate(parent_name)
-                self.last_event_time[parent_name] = time.time()
+                self.last_event_time[parent_name] = self.clock()
 
 
     def check_pods_stability(self):
-        current_time = time.time()
+        current_time = self.clock()
 
         try:
             if self.resource_type == "Deployment":
@@ -172,12 +179,12 @@ class EpigeneticController:
                                 self.last_event_time[name] = current_time
 
         except Exception as e:
-            print(f"⚠️ Error in stability check: {e}")
+            self.log(f"⚠️ Error in stability check: {e}")
 
 
     def run(self):
         w = watch.Watch()
-        print("👁️  Controller active. Watching for stress events...")
+        self.log("👁️  Controller active. Watching for stress events...")
 
         for event in w.stream(self.v1.list_namespaced_pod, self.namespace):
             if event:

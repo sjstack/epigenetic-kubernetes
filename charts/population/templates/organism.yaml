@@ -6,14 +6,16 @@ metadata:
   name: clonal-organism
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: {{ .Values.Count }}
+  replicas: {{ .Values.count }}
   selector:
     matchLabels:
       app: cell
+      strategy: clonal
   template:
     metadata:
       labels:
         app: cell
+        strategy: clonal
       annotations:
         # Initial epigenetic state: Unmethylated
         epigenetic-mark.science/methylation-level: "0"
@@ -28,7 +30,7 @@ spec:
             memory: {{ printf "%dMi" (int .Values.baseMemory) }}
 
 {{- else if eq .Values.strategy "transgenerational" }}
-{{- range $i := until (int .Values.Count) }}
+{{- range $i := until (int .Values.count) }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -39,12 +41,14 @@ spec:
   selector:
     matchLabels:
       app: cell
-      lineage: {{ $i | quote }}
+      lineage: {{ printf "organism-%d" $i | quote }}
+      strategy: transgenerational
   template:
     metadata:
       labels:
         app: cell
-        lineage: {{ $i | quote }}
+        lineage: {{ printf "organism-%d" $i | quote }}
+        strategy: transgenerational
       annotations:
         epigenetic-mark.science/methylation-level: "0"
     spec:
