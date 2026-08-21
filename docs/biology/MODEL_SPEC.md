@@ -27,9 +27,9 @@ Machine-readable rows: [mechanisms.json](mechanisms.json). Lifecycle: [SEED_LIFE
 | Mechanism | Evidence | Status | Citation |
 | :--- | :--- | :--- | :--- |
 | MET1/VIM CG maintenance | A | direct | [Law & Jacobsen 2010](https://doi.org/10.1038/nrg2719) |
-| CMT3–H3K9me2 CHG | A | direct | [Du et al. 2012](https://doi.org/10.1126/science.1221779) |
+| CMT3-H3K9me2 CHG | A | direct | [Du et al. 2012](https://doi.org/10.1126/science.1221779) |
 | CMT2/DDM1 CHH | B | coarse-grained | [Zemach et al. 2013](https://doi.org/10.1016/j.cell.2013.02.001) |
-| Canonical RdDM (Pol IV–DRM2) | A | coarse-grained | [Matzke & Mosher 2014](https://doi.org/10.1038/nrg3683) |
+| Canonical RdDM (Pol IV-DRM2) | A | coarse-grained | [Matzke & Mosher 2014](https://doi.org/10.1038/nrg3683) |
 | DME central-cell demethylation | A | direct | [Gehring et al. 2006](https://doi.org/10.1016/j.cell.2005.12.034), [Gehring et al. 2009](https://doi.org/10.1126/science.1171609) |
 | ROS1 sperm/somatic demethylation | A | direct | [Hemenway & Gehring 2025](https://doi.org/10.1186/s13059-025-03745-w) |
 | ROS1 promoter sensor | A | direct | [Williams et al. 2015](https://doi.org/10.1371/journal.pgen.1005142) |
@@ -38,12 +38,12 @@ Machine-readable rows: [mechanisms.json](mechanisms.json). Lifecycle: [SEED_LIFE
 | HDG3 TE epiallele | A | direct | [Pignatta et al. 2018](https://doi.org/10.1371/journal.pgen.1007469) |
 | Endosperm regional/cell-cycle heterogeneity | B | coarse-grained | [Picard et al. 2021](https://doi.org/10.1038/s41477-021-00922-0) |
 | DAP 3/5/7 progression | B | coarse-grained | [Martin et al. 2026](https://doi.org/10.1038/s41477-026-02295-8) |
-| Noncanonical RdDM | H | deferred | — |
-| Adaptive transgenerational memory from arbitrary stress | H | deferred | — |
+| Noncanonical RdDM | H | deferred | n/a |
+| Adaptive transgenerational memory from arbitrary stress | H | deferred | n/a |
 
 ## Expression rules
 
-Locus-specific, never a global methylation–expression sign:
+Locus-specific, never a global methylation-expression sign:
 
 - `MEA`, `FWA`, `FIS2`: hypomethylation activates (MEGs after maternal DME).
 - `PHE1`: maternal H3K27me3 represses (PEG).

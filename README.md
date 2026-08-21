@@ -2,7 +2,7 @@
 
 **A coarse-grained, allele-resolved model of Arabidopsis reproductive epigenetics implemented through Kubernetes**, aligned with the [Gehring Lab](https://www.gehringplantlab.org/research).
 
-V1 asks whether a compact mechanistic model can reproduce parent-of-origin methylation and expression in the Arabidopsis seed — embryo (`1m:1p`), endosperm (`2m:1p`), and maternal seed coat — across reciprocal Col-0 / Ler / Cvi crosses, and whether those same primitives can later be reused as a software architecture without rewriting the biology.
+V1 asks whether a compact mechanistic model can reproduce parent-of-origin methylation and expression in the Arabidopsis seed (embryo `1m:1p`, endosperm `2m:1p`, and maternal seed coat) across reciprocal Col-0 / Ler / Cvi crosses, and whether those same primitives can later be reused as a software architecture without rewriting the biology.
 
 The legacy CPU-scaling controller is frozen under `legacy/` and `controller/`. It is not the scientific core.
 
