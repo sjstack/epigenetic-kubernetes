@@ -1,0 +1,14 @@
+{
+  "$id": "epik.event-ledger.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "required": [
+      "index",
+      "kind",
+      "mechanism"
+    ],
+    "type": "object"
+  },
+  "title": "Event ledger",
+  "type": "array"
+}

@@ -1,0 +1,10 @@
+apiVersion: epik.gehringlab.org/v1
+kind: SimulationRun
+metadata:
+  name: col-x-cvi
+  namespace: epik
+spec:
+  cross: ColxCvi
+  seed: 1
+  toDap: 7
+  profileId: arabidopsis-gehring-v1

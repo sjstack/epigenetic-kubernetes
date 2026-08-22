@@ -1,0 +1,13 @@
+services:
+  epik:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    image: epik:1.0.0
+    user: "65532:65532"
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - ../../artifacts:/artifacts
+    command: ["run-cross", "ColxCvi", "--to-dap", "7", "--seed", "1", "--out", "/artifacts/compose"]

@@ -1,0 +1,9 @@
+{
+  "schema": "epik.cross.v1",
+  "maternal": "Col-0",
+  "paternal": "Cvi",
+  "cross_id": "Col-0xCvi",
+  "embryo_dosage": "1m:1p",
+  "endosperm_dosage": "2m:1p",
+  "seed_coat_dosage": "2m"
+}

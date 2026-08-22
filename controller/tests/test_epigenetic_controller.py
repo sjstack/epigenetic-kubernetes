@@ -1,6 +1,6 @@
-import os
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import MagicMock, patch, call
 from controller.epigenetic_controller import EpigeneticController
 
 NAMESPACE = "epigenetik"

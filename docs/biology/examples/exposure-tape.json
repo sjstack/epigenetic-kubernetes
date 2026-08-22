@@ -1,0 +1,6 @@
+{
+  "schema": "epik.exposure-tape.v1",
+  "exposures": [
+    {"type": "heat_pulse", "dap": 3, "magnitude": 1.0, "target": {"pathway": "DRM2"}}
+  ]
+}

@@ -1,0 +1,1341 @@
+{
+  "accessions": [
+    "Col-0",
+    "Ler",
+    "Cvi",
+    "C24"
+  ],
+  "evidence_spine": "docs/biology/EVIDENCE.md",
+  "id": "arabidopsis-gehring-v1",
+  "invariants": {
+    "embryo_dosage": "1m:1p",
+    "endosperm_dosage": "2m:1p",
+    "endosperm_pedigree_terminal": true,
+    "seed_coat_dosage": "2m",
+    "seed_coat_pedigree_terminal": true
+  },
+  "loci": [
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.88,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.88,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.88,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.88,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT1G02580",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": true,
+      "id": "MEA",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "MEA_TE",
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.84,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.84,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.84,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.84,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT2G35670",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": true,
+      "id": "FIS2",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.9,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.9,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.9,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.9,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT4G25530",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "FWA",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "FWA_TE",
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.55,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Col-0": {
+          "cg": 0.55,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Cvi": {
+          "cg": 0.55,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Ler": {
+          "cg": 0.55,
+          "chg": 0.2,
+          "chh": 0.1
+        }
+      },
+      "agi": "AT1G65330",
+      "chromatin": "euchromatin",
+      "class": "peg",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "h3k27me3_represses",
+      "fis_prc2": true,
+      "id": "PHE1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.4,
+          "chg": 0.15,
+          "chh": 0.1
+        },
+        "Col-0": {
+          "cg": 0.4,
+          "chg": 0.15,
+          "chh": 0.1
+        },
+        "Cvi": {
+          "cg": 0.4,
+          "chg": 0.15,
+          "chh": 0.1
+        },
+        "Ler": {
+          "cg": 0.4,
+          "chg": 0.15,
+          "chh": 0.1
+        }
+      },
+      "agi": "AT2G32370",
+      "chromatin": "euchromatin",
+      "class": "peg",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "te_methylation_promotes_paternal",
+      "fis_prc2": false,
+      "id": "HDG3",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "HDG3_TE",
+      "variable_imprint": true
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT3G03260",
+      "chromatin": "euchromatin",
+      "class": "peg",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "te_methylation_promotes_paternal",
+      "fis_prc2": false,
+      "id": "HDG8",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "HDG8_TE",
+      "variable_imprint": true
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT5G17320",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "HDG9",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "HDG9_TE",
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT4G00540",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "MYB3R2",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT5G62110",
+      "chromatin": "euchromatin",
+      "class": "peg",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "te_methylation_promotes_paternal",
+      "fis_prc2": false,
+      "id": "AT5G62110",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT3G14205",
+      "chromatin": "euchromatin",
+      "class": "meg",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "AT3G14205",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT2G34890",
+      "chromatin": "euchromatin",
+      "class": "peg",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive_paternal",
+      "fis_prc2": false,
+      "id": "AT2G34890",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.2,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Col-0": {
+          "cg": 0.2,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Cvi": {
+          "cg": 0.2,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Ler": {
+          "cg": 0.2,
+          "chg": 0.1,
+          "chh": 0.05
+        }
+      },
+      "agi": "AT5G04560",
+      "chromatin": "euchromatin",
+      "class": "pathway",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive",
+      "fis_prc2": false,
+      "id": "DME",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.45,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.45,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.45,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.45,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "AT2G36490",
+      "chromatin": "euchromatin",
+      "class": "ros1_sensor",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "ros1_sensor",
+      "fis_prc2": false,
+      "id": "ROS1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": "ROS1_PROMOTER",
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.5,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.5,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.5,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.5,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "ros1_sensor",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "ros1_sensor",
+      "fis_prc2": false,
+      "id": "ROS1_PROMOTER",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.3,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Col-0": {
+          "cg": 0.3,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Cvi": {
+          "cg": 0.3,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Ler": {
+          "cg": 0.3,
+          "chg": 0.1,
+          "chh": 0.05
+        }
+      },
+      "agi": "AT1G63020",
+      "chromatin": "euchromatin",
+      "class": "pathway",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive",
+      "fis_prc2": false,
+      "id": "NRPD1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Col-0": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Cvi": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Ler": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        }
+      },
+      "agi": "AT5G49160",
+      "chromatin": "euchromatin",
+      "class": "pathway",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive",
+      "fis_prc2": false,
+      "id": "MET1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.85,
+          "chg": 0.7,
+          "chh": 0.6
+        },
+        "Col-0": {
+          "cg": 0.85,
+          "chg": 0.7,
+          "chh": 0.6
+        },
+        "Cvi": {
+          "cg": 0.85,
+          "chg": 0.7,
+          "chh": 0.6
+        },
+        "Ler": {
+          "cg": 0.85,
+          "chg": 0.7,
+          "chh": 0.6
+        }
+      },
+      "agi": "",
+      "chromatin": "heterochromatin",
+      "class": "rddm_target",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "AtSN1",
+      "rddm_target": true,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.55,
+          "chh": 0.5
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.55,
+          "chh": 0.5
+        },
+        "Cvi": {
+          "cg": 0.8,
+          "chg": 0.55,
+          "chh": 0.5
+        },
+        "Ler": {
+          "cg": 0.8,
+          "chg": 0.55,
+          "chh": 0.5
+        }
+      },
+      "agi": "AT2G17690",
+      "chromatin": "euchromatin",
+      "class": "rddm_target",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "SDC",
+      "rddm_target": true,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.15,
+          "chg": 0.05,
+          "chh": 0.02
+        },
+        "Col-0": {
+          "cg": 0.15,
+          "chg": 0.05,
+          "chh": 0.02
+        },
+        "Cvi": {
+          "cg": 0.15,
+          "chg": 0.05,
+          "chh": 0.02
+        },
+        "Ler": {
+          "cg": 0.15,
+          "chg": 0.05,
+          "chh": 0.02
+        }
+      },
+      "agi": "AT5G09810",
+      "chromatin": "euchromatin",
+      "class": "biallelic",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive",
+      "fis_prc2": false,
+      "id": "ACT7",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.12,
+          "chg": 0.04,
+          "chh": 0.02
+        },
+        "Col-0": {
+          "cg": 0.12,
+          "chg": 0.04,
+          "chh": 0.02
+        },
+        "Cvi": {
+          "cg": 0.12,
+          "chg": 0.04,
+          "chh": 0.02
+        },
+        "Ler": {
+          "cg": 0.12,
+          "chg": 0.04,
+          "chh": 0.02
+        }
+      },
+      "agi": "AT4G05320",
+      "chromatin": "euchromatin",
+      "class": "biallelic",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "constitutive",
+      "fis_prc2": false,
+      "id": "UBQ10",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.5,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Col-0": {
+          "cg": 0.5,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Cvi": {
+          "cg": 0.5,
+          "chg": 0.2,
+          "chh": 0.1
+        },
+        "Ler": {
+          "cg": 0.5,
+          "chg": 0.2,
+          "chh": 0.1
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "neutral",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "null",
+      "fis_prc2": false,
+      "id": "NEUTRAL1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.85,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.9,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.2,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.4,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "dmr_no_imprint",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "null",
+      "fis_prc2": false,
+      "id": "DMR_NULL1",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.75,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.75,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.75,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.75,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "shared_dme_ros1",
+      "dme_target": true,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "TARGET_SHARED1",
+      "rddm_target": false,
+      "ros1_target": true,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Col-0": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Cvi": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Ler": {
+          "cg": 0.25,
+          "chg": 0.1,
+          "chh": 0.05
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "anti_silencing",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "hypomethylation_activates",
+      "fis_prc2": false,
+      "id": "ANTI_SILENCING1",
+      "rddm_target": false,
+      "ros1_target": true,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.9,
+          "chg": 0.6,
+          "chh": 0.5
+        },
+        "Col-0": {
+          "cg": 0.9,
+          "chg": 0.6,
+          "chh": 0.5
+        },
+        "Cvi": {
+          "cg": 0.9,
+          "chg": 0.6,
+          "chh": 0.5
+        },
+        "Ler": {
+          "cg": 0.9,
+          "chg": 0.6,
+          "chh": 0.5
+        }
+      },
+      "agi": "",
+      "chromatin": "heterochromatin",
+      "class": "te",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "MEA_TE",
+      "rddm_target": true,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.92,
+          "chg": 0.65,
+          "chh": 0.55
+        },
+        "Col-0": {
+          "cg": 0.92,
+          "chg": 0.65,
+          "chh": 0.55
+        },
+        "Cvi": {
+          "cg": 0.92,
+          "chg": 0.65,
+          "chh": 0.55
+        },
+        "Ler": {
+          "cg": 0.92,
+          "chg": 0.65,
+          "chh": 0.55
+        }
+      },
+      "agi": "",
+      "chromatin": "heterochromatin",
+      "class": "te",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "FWA_TE",
+      "rddm_target": true,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.9,
+          "chg": 0.68,
+          "chh": 0.52
+        },
+        "Col-0": {
+          "cg": 0.92,
+          "chg": 0.7,
+          "chh": 0.55
+        },
+        "Cvi": {
+          "cg": 0.04,
+          "chg": 0.03,
+          "chh": 0.02
+        },
+        "Ler": {
+          "cg": 0.88,
+          "chg": 0.66,
+          "chh": 0.5
+        }
+      },
+      "agi": "",
+      "chromatin": "heterochromatin",
+      "class": "te",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "HDG3_TE",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.8,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.15,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.78,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "te",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "HDG8_TE",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.7,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Col-0": {
+          "cg": 0.7,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Cvi": {
+          "cg": 0.7,
+          "chg": 0.35,
+          "chh": 0.22
+        },
+        "Ler": {
+          "cg": 0.7,
+          "chg": 0.35,
+          "chh": 0.22
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "te",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "HDG9_TE",
+      "rddm_target": false,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.35,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Col-0": {
+          "cg": 0.35,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Cvi": {
+          "cg": 0.35,
+          "chg": 0.1,
+          "chh": 0.05
+        },
+        "Ler": {
+          "cg": 0.35,
+          "chg": 0.1,
+          "chh": 0.05
+        }
+      },
+      "agi": "",
+      "chromatin": "euchromatin",
+      "class": "anti_silencing",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "null",
+      "fis_prc2": false,
+      "id": "EUCHROMATIN_SCAR",
+      "rddm_target": false,
+      "ros1_target": true,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    },
+    {
+      "accession_methylation": {
+        "C24": {
+          "cg": 0.93,
+          "chg": 0.8,
+          "chh": 0.7
+        },
+        "Col-0": {
+          "cg": 0.93,
+          "chg": 0.8,
+          "chh": 0.7
+        },
+        "Cvi": {
+          "cg": 0.93,
+          "chg": 0.8,
+          "chh": 0.7
+        },
+        "Ler": {
+          "cg": 0.93,
+          "chg": 0.8,
+          "chh": 0.7
+        }
+      },
+      "agi": "",
+      "chromatin": "heterochromatin",
+      "class": "rddm_target",
+      "dme_target": false,
+      "dmr_implies_imprint": false,
+      "expression_rule": "silenced_by_methylation",
+      "fis_prc2": false,
+      "id": "HETEROCHROMATIN_CORE",
+      "rddm_target": true,
+      "ros1_target": false,
+      "sites": {
+        "cg": 20,
+        "chg": 8,
+        "chh": 24
+      },
+      "te_proximal": null,
+      "variable_imprint": false
+    }
+  ],
+  "pathways": {
+    "CMT2": {
+      "evidence": "B",
+      "rate": 0.58
+    },
+    "CMT3": {
+      "evidence": "A",
+      "rate": 0.86
+    },
+    "DDM1": {
+      "evidence": "B",
+      "rate": 1.0
+    },
+    "DME": {
+      "evidence": "A",
+      "rate": 0.92
+    },
+    "DRM2": {
+      "evidence": "A",
+      "rate": 0.72
+    },
+    "FIS_PRC2": {
+      "evidence": "A",
+      "rate": 1.0
+    },
+    "MET1": {
+      "evidence": "A",
+      "rate": 0.96
+    },
+    "NRPD1": {
+      "evidence": "A",
+      "rate": 1.0
+    },
+    "ROS1": {
+      "evidence": "A",
+      "rate": 0.75,
+      "sensor": true
+    },
+    "SUVH": {
+      "evidence": "A",
+      "rate": 1.0
+    },
+    "VIM": {
+      "evidence": "B",
+      "rate": 0.96
+    }
+  },
+  "reference": "TAIR10/Araport11",
+  "schema": "epik.profile.v1",
+  "species": "Arabidopsis thaliana",
+  "version": "1.0.0"
+}

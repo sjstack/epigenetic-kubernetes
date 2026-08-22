@@ -1,0 +1,31 @@
+{
+  "$id": "epik.profile.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "accessions": {
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "loci": {
+      "type": "array"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "species": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "schema",
+    "species",
+    "loci",
+    "accessions"
+  ],
+  "title": "Plant profile",
+  "type": "object"
+}

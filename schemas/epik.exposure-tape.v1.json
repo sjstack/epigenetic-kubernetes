@@ -1,0 +1,35 @@
+{
+  "$id": "epik.exposure-tape.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "exposures": {
+      "items": {
+        "properties": {
+          "type": {
+            "enum": [
+              "heat_pulse",
+              "drought",
+              "pathogen",
+              "high_light",
+              "nutrient_n"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "epik.exposure-tape.v1"
+    }
+  },
+  "required": [
+    "schema",
+    "exposures"
+  ],
+  "title": "Exposure tape",
+  "type": "object"
+}

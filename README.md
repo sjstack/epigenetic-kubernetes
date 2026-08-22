@@ -1,139 +1,79 @@
-# Epigenetic Adaptation in Kubernetes
+# Epigenetic Kubernetes (epik)
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python](https://img.shields.io/badge/python-3.9+-blue.svg) ![Kubernetes](https://img.shields.io/badge/kubernetes-1.25+-green.svg)
+**A coarse-grained, allele-resolved model of Arabidopsis reproductive epigenetics implemented through Kubernetes**, aligned with the [Gehring Lab](https://www.gehringplantlab.org/research).
 
-**A scientific simulation that treats Kubernetes workloads as biological organisms.**
+V1 asks whether a compact mechanistic model can reproduce parent-of-origin methylation and expression in the Arabidopsis seed (embryo `1m:1p`, endosperm `2m:1p`, and maternal seed coat) across reciprocal Col-0 / Ler / Cvi crosses, and whether those same primitives can later be reused as a software architecture without rewriting the biology.
 
-This project tests the hypothesis that **epigenetic adaptation**—the dynamic modification of gene expression (resource limits) in response to environmental stress—creates more resilient distributed systems than static configurations.
+The legacy CPU-scaling controller is frozen under `legacy/` and `controller/`. It is not the scientific core.
 
-Also, I want to run experiments for emergent behavior by using the kubernetes framework as a model for epigenetics (a subject that I know really nothing about).
+## Research questions
 
-## 🧬 Context
+1. Can the model recover allele-specific methylation and expression against the correct dosage nulls?
+2. Can nearby TE state distinguish conserved imprinting, variable imprinting (`HDG3`), and DMRs with no imprinting consequence?
+3. Can maternal DME, paternal ROS1, FIS-PRC2, and maternal-versus-paternal Pol IV be told apart?
+4. Can endosperm region, DAP, and cell-cycle phase explain expression heterogeneity?
+5. In a **separate** protocol, can the ROS1 sensor circuit reproduce euchromatic scars versus heterochromatic recovery?
 
-This experiment translates biological mechanisms directly into Cloud Native primitives:
+See [docs/biology/MODEL_SPEC.md](docs/biology/MODEL_SPEC.md), [docs/biology/CLAIMS.md](docs/biology/CLAIMS.md), and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-| Biological Concept | Kubernetes Implementation |
+## Install
+
+Python 3.11+:
+
+```bash
+pip install -e ".[dev]"
+make test
+make legacy-demo
+```
+
+## Scientific CLI
+
+```bash
+epik validate-profile
+epik init-cross --cross ColxCvi --out artifacts/init.json
+epik run-cross ColxCvi --to-dap 7 --seed 1 --out artifacts/cross
+epik call-imprinting artifacts/cross
+epik run-scenario drm2-off
+epik run-protocol ros1-homeostasis --out artifacts/ros1
+epik export artifacts/cross
+epik adapt artifacts/cross --target spec.replicas
+```
+
+Toy engine (no biology):
+
+```bash
+epik simulate --seed 1 --steps 10 --out artifacts/toy
+epik replay artifacts/toy
+epik digest artifacts/toy
+```
+
+## Architecture
+
+Kubernetes orchestrates `SimulationRun` jobs. The biological engine is deterministic, Kubernetes-agnostic, and replayable from a seeded event ledger. External applications consume a read-only outbound API. Environmental inputs enter only as a schema-validated [ExposureTape](docs/ARCHITECTURE.md).
+
+```text
+telemetry -> ExposureTape -> engine -> ledger/artifacts -> outbound API -> consumers / PhenotypeAdapter
+```
+
+Consumers cannot write engine state. Attaching them does not change digests.
+
+## Repository map
+
+| Path | Role |
 | :--- | :--- |
-| **The Organism** | A `Deployment` (Clonal) or `StatefulSet` (Lineage). |
-| **The Phenotype** | The CPU/Memory requests (idea is to expand this such that you could support any change to the deploy template) defined in the Pod spec. |
-| **The Epigenetic Mark** | The `epigenetic-mark.science/methylation-level` annotation. |
-| **Methylation** | Increasing resource requests in response to "Cell Death" (Pod OOM/Crash for now, could be anything in the future, let your imagination of failure be your inspiration!). |
-| **Demethylation** | Actively shedding resources during stability. |
+| `src/epik/engine/` | Logical time, RNG streams, reducer, ledger, digests |
+| `src/epik/model/` | Profiles, crosses, methylomes, invariants |
+| `src/epik/mechanisms/` | Maintenance, RdDM, DME/ROS1, seed, expression |
+| `src/epik/operator/` | CRDs, reconciler, artifact jobs |
+| `src/epik/integration/` | ExposureTape + PhenotypeAdapter |
+| `profiles/arabidopsis-gehring-v1/` | Calibrated Arabidopsis profile |
+| `controller/` | Frozen v0 CPU-analogy operator |
+| `docs/biology/` | Evidence-labeled model contract |
 
-### Demethylation
-In nature, methylation is not a one-way street; it is actively pruned to maintain homeostasis. 
-* **In this cluster:** If the organism remains stable (no restarts) for a set `STABILITY_WINDOW`, the controller actively "demethylates" the pod, reducing its resource consumption to prevent "resource hoarding" (over-provisioning).
+## Legacy controller
 
-## 🏛️ Architecture
+`make legacy-demo` runs deterministic clonal and transgenerational mock cycles. Default `STABILITY_WINDOW` is **10** seconds. Helm `count` is lowercase. See [legacy/RELEASE.md](legacy/RELEASE.md).
 
-* **`manifests/`**: Defines the "Environmental Stressors" (Chaos Mesh schedules).
-* **`charts/population/`**: A Helm chart defining the organism. Supports two evolutionary strategies:
-    * **Clonal:** A standard Deployment. All pods share the same "genetic" memory.
-    * **Transgenerational:** A StatefulSet. Each replica tracks its own unique lineage and adaptation history.
-* **`controller/epigenetic_controller.py`**: The "Central Nervous System." A class-based Python operator that:
-    1.  **Auto-detects** the organism strategy (Clonal vs. Lineage).
-    2.  **Monitors** for `DELETED` events (Cell Death).
-    3.  **Methylates** (scales up) survivors.
-    4.  **Demethylates** (scales down) during peace.
-* **`setup.sh`**: Automated lab technician. Provisions a cluster (DigitalOcean or local k3s), installs Chaos Mesh, and deploys the population.
+## License
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-* [Docker](https://www.docker.com/) & [kubectl](https://kubernetes.io/docs/tasks/tools/)
-* [Helm](https://helm.sh/)
-* [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) (DigitalOcean CLI)
-* Python 3.9+
-
-### 1. Provision the Environment
-The `setup.sh` script handles the entire lifecycle. You can run in **Development** (k3s on a single Droplet) or **Production** (DOKS Cluster).
-
-**For Development (Recommended):**
-```bash
-# Set your strategy: "clonal" (Deployment) or "transgenerational" (StatefulSet)
-export ORGANISM_STRATEGY="transgenerational" 
-export EPIK_ENV="dev"
-export DO_SSH_KEY="<your_ssh_fingerprint>"
-
-source setup.sh
-```
-*The script will provision infrastructure, install Chaos Mesh, and deploy the initial population.*
-
-### 2. Start the Epigenetic Engine
-Once the cluster is ready, start the controller locally to begin the simulation.
-
-```bash
-# Install dependencies
-pip install -r controller/requirements.txt
-
-# Run the controller
-python controller/epigenetic_controller.py
-```
-**Output:**
-```bash
-> 🦠 Epigenetic Controller initialized for namespace: epigenetik
-> ✅ Detected Strategy: TRANSGENERATIONAL (Resource: StatefulSet)
-> 👁️ Controller active. Watching for stress events...
-```
-### 3. Inject Environmental Stress
-Without stress, the organism will remain at baseline (Methylation Level 0). Trigger a recurring "Pod Kill" event to force adaptation:
-
-```bash
-kubectl apply -f manifests/chaos-experiment.yaml
-```
-
----
-
-## 🔬 Observation & Analysis
-
-### Monitoring Adaptation (Methylation)
-Watch the controller logs. When Chaos Mesh kills a pod, the controller should react:
-```bash
-> 💀 Stress: Member of current generation (0) died.
-> 🧬 Stress detected in organism-0. Methylating to level 1...
-```
-### Monitoring Homeostasis (Demethylation)
-If you delete the Chaos Experiment (`kubectl delete -f manifests/chaos-experiment.yaml`) and wait for the `STABILITY_WINDOW` (default: 20s), you will see the demethylation kick in:
-```bash
-> 🌿 Stability detected in organism-0. Demethylating to level 0...
-```
-### Verifying Phenotype
-Check the actual resource allocation of the pods to see the physical change:
-```bash
-kubectl describe pod -n epigenetik -l app=cell
-```
-*Look for `Requests: cpu` increasing (e.g., `100m` -> `200m`) or decreasing.*
-
----
-
-## 🛠️ Development
-
-### Running Tests
-The project uses `pytest` with mocks for the Kubernetes API.
-
-```bash
-# Install test deps
-pip install -r controller/test_requirements.txt
-
-# Run suite
-python -m pytest controller/tests/
-```
-
-### Configuration
-You can tweak the experiment parameters via environment variables when running the controller:
-
-| Variable | Default | Description |
-| :--- | :--- | :--- |
-| `NAMESPACE` | `epigenetik` | The K8s namespace for the experiment. |
-| `STRESS_THRESHOLD` | `1` | Restarts required to trigger methylation. |
-| `STABILITY_WINDOW` | `20` | Seconds of silence before demethylation begins. |
-
----
-
-## ⚖️ License
-
-This project is open source under the [MIT License](LICENSE).
-
-Copyright (c) 2026 Scott J. Stackley
+MIT. Copyright (c) 2026 Scott J. Stackley

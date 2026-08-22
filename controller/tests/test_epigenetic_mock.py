@@ -1,10 +1,11 @@
 
-import os
 import threading
 import time
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 from controller.mocks.k8s_client import mock_db
+
 
 @pytest.fixture
 def mock_env(monkeypatch):
@@ -21,6 +22,7 @@ def reset_mock_db(mock_env):
 def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     # Reload controller module to pick up env vars and mock injection
     import importlib
+
     import controller.epigenetic_controller
     importlib.reload(controller.epigenetic_controller)
     from controller.epigenetic_controller import EpigeneticController
@@ -114,7 +116,7 @@ def test_epigenetic_controller_mock(mock_env, reset_mock_db):
     # It passed.
 
     # But to be safe and consistent with heartbeat logic:
-    from kubernetes.client import V1Pod, V1ObjectMeta
+    from kubernetes.client import V1ObjectMeta, V1Pod
     dummy_pod_obj = V1Pod(
         metadata=V1ObjectMeta(
             name="dummy",

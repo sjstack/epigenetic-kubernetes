@@ -1,0 +1,13 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: epik-run-pod-kill
+  namespace: epik
+spec:
+  action: pod-kill
+  mode: one
+  duration: 1s
+  selector:
+    labelSelectors:
+      app: epik-run
+  # Infrastructure resilience only. Pod death is not a biological signal.

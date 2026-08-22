@@ -1,16 +1,5 @@
-apiVersion: chaos-mesh.org/v1alpha1
-kind: Schedule
-metadata:
-  name: environmental-stress
-  namespace: epigenetik
-spec:
-  schedule: "@every 1m"
-  type: "PodChaos"
-  historyLimit: 5
-  concurrencyPolicy: "Forbid"
-  podChaos:
-    action: pod-kill
-    mode: one
-    selector:
-      labelSelectors:
-        app: "cell"
+# Archived (v0)
+
+The legacy CPU-analogy chaos schedule lived here. Infrastructure pod-kill tests
+now live in `deploy/chaos/pod-kill.yaml` and `tests/resilience/chaos-pod-kill.yaml`.
+Those experiments are biologically inert: they test operator retry, not methylation.
